@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">旅客行程智能推荐</string>
+    <string name="start">出发城市</string>
+    <string name="exchange">交换</string>
+    <string name="arrive">到达城市</string>
+    <string name="date">出发日期：</string>
+    <string name="button">行程搜索</string>
+</resources>

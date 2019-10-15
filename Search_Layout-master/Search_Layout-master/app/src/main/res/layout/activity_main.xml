@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context="scut.carson_ho.search_layout.MainActivity">
+
+    <TableLayout
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        android:paddingTop="220dp"
+        android:stretchColumns="1">
+
+
+        <TableRow>
+           <EditText
+            android:id="@+id/start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:paddingStart="2dp"
+               android:paddingEnd="0dp"
+            android:gravity="center"
+            android:hint="@string/start"
+            android:textSize="20sp"
+               tools:targetApi="cupcake" />
+
+            <ImageButton
+                android:id="@+id/exchange"
+                android:contentDescription="@string/exchange"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="#00000000"
+                android:paddingTop="5dp"
+                android:src="@mipmap/exchange"
+                />
+
+            <EditText
+                android:id="@+id/arrive"
+                android:layout_width="0pt"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text"
+                android:gravity="center"
+                android:hint="@string/arrive"
+                android:textSize="20sp"
+                tools:targetApi="cupcake" />
+
+    </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+        </TableRow>
+
+         <TableRow>
+             <TextView
+                 android:id="@+id/date"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:text="@string/date"
+                 android:paddingTop="20dp"
+                 android:paddingBottom="20dp"
+                 android:paddingStart="15dp"
+                 android:paddingEnd="0dp"
+                 android:textColor="#000000"
+                 android:textSize="20sp"
+                 />
+
+             <TextView
+                 android:id="@+id/tv_date"
+                 android:layout_width="wrap_content"
+                 android:layout_height="45dp"
+                 android:layout_weight="1"
+                 android:background="#ededed"
+                 android:paddingTop="15dp"
+                 android:textSize="18sp"
+                 />
+         </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+        </TableRow>
+
+        <TableRow>
+          <Button
+             android:id="@+id/button"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:gravity="center"
+              android:text="@string/button"
+              android:paddingTop="15dp"
+              android:paddingBottom="15dp"
+              android:textSize="20sp"
+              android:textColor="#ffffff"
+              android:background="@drawable/button_shape"
+              android:layout_span="2"/>
+        </TableRow>
+
+    </TableLayout>
+</RelativeLayout>

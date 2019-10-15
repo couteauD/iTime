@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:paddingTop="120dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="0dp"
+        android:endYear="2029"
+        android:startYear="2019"
+        android:headerBackground="#3F51B5"
+        android:yearListSelectorColor="#3F51B5"
+        android:calendarTextColor="#3F51B5"/>
+</LinearLayout>
