@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_mainpage">
+
+    <fragment
+        android:id="@+id/nav_mainpage"
+        android:name="com.example.itime.ui.mainpage.MainpageFragment"
+        android:label="@string/menu_mainpage"
+        tools:layout="@layout/fragment_mainpage" />
+
+    <fragment
+        android:id="@+id/nav_mark"
+        android:name="com.example.itime.ui.mark.MarkFragment"
+        android:label="@string/menu_mark"
+        tools:layout="@layout/fragment_mark" />
+
+    <fragment
+        android:id="@+id/nav_component"
+        android:name="com.example.itime.ui.component.ComponentFragment"
+        android:label="@string/menu_component"
+        tools:layout="@layout/fragment_component" />
+
+    <fragment
+        android:id="@+id/nav_color"
+        android:name="com.example.itime.ui.color.colorFrament"
+        android:label="@string/menu_color"
+        tools:layout="@layout/fragment_color" />
+
+    <fragment
+        android:id="@+id/nav_senior"
+        android:name="com.example.itime.ui.senior.SeniorFragment"
+        android:label="@string/menu_senior"
+        tools:layout="@layout/fragment_senior" />
+
+    <fragment
+        android:id="@+id/nav_setting"
+        android:name="com.example.itime.ui.setting.SettingFragment"
+        android:label="@string/menu_setting"
+        tools:layout="@layout/fragment_setting" />
+
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.example.itime.ui.about.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/nav_help"
+        android:name="com.example.itime.ui.help.HelpFragment"
+        android:label="@string/menu_help"
+        tools:layout="@layout/fragment_help" />
+</navigation>
