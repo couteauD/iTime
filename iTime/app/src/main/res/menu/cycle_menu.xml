@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <!--条目组-->
+    <group>
+        <!--每个条目-->
+        <item
+            android:id="@+id/item_weekly"
+            android:title="每周" />
+
+        <item
+            android:id="@+id/item_monthly"
+            android:title="每月" />
+
+        <item
+            android:id="@+id/item_yearly"
+            android:title="每年" />
+
+        <item
+            android:id="@+id/item_defined"
+            android:title="自定义"/>
+
+    </group>
+</menu>
