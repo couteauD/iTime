@@ -1,11 +1,18 @@
 package com.example.itime;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -13,22 +20,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
+import java.io.File;
 import java.util.Calendar;
 
 public class newScheduleActivity extends AppCompatActivity{
 
     private Context context;
-    private LinearLayout linearLayoutDate, linearLayoutcycle;
+    private LinearLayout linearLayoutDate, linearLayoutcycle,linearLayoutImg,linearLayouttitle;
     private TextView dateInstuction, timeInstruction,cycleInstruction;
     private int year, month, day, hour, minute;
     //在TextView上显示的字符
     private StringBuffer date, time;
+    //拍照相册裁剪封装类
+    private SelectPictureManager selectPictureManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,18 @@ public class newScheduleActivity extends AppCompatActivity{
         cycleInstruction=findViewById(R.id.text_view_cycleInstruction);
         //为组件注册上下文菜单
         registerForContextMenu(linearLayoutcycle);
+
+        //设置图片
+        //初始化控件
+        linearLayoutImg=findViewById(R.id.setimg);
+        linearLayouttitle=findViewById(R.id.linearLayout_title);
+        //图片点击事件
+        linearLayoutImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initSelectPictureManager();
+            }
+        });
     }
 
     /**
@@ -193,6 +215,46 @@ public class newScheduleActivity extends AppCompatActivity{
                         }).show();
         }
         return true;
+    }
+
+    /**
+     * 实现拍照相册读取图片截图
+     */
+    void initSelectPictureManager() {
+        selectPictureManager = new SelectPictureManager(this);
+        selectPictureManager.setPictureSelectListner(new SelectPictureManager.PictureSelectListner() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onPictureSelect(String imagePath) {
+                if(imagePath != null){
+                    Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                    linearLayouttitle.setBackground( new BitmapDrawable(getResources(),bitmap));
+                }else {
+                    Toast.makeText(context,"获取图片失败",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void throwError(Exception e) {
+                e.printStackTrace();
+            }
+        });
+        selectPictureManager.setNeedCrop(true);//需要裁剪
+        selectPictureManager.setOutPutSize(400, 400);//输入尺寸
+        selectPictureManager.setContinuous(true);//设置连拍
+        selectPictureManager.showSelectPicturePopupWindow(this.getWindow().getDecorView());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        selectPictureManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        selectPictureManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
 }
