@@ -62,8 +62,14 @@ public class newScheduleActivity extends AppCompatActivity{
         //初始化控件
         linearLayoutcycle= findViewById(R.id.setcycle);
         cycleInstruction=findViewById(R.id.text_view_cycleInstruction);
-        //为组件注册上下文菜单
-        registerForContextMenu(linearLayoutcycle);
+        //重复设置点击事件
+        linearLayoutcycle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initcycle();
+            }
+        });
+
 
         //设置图片
         //初始化控件
@@ -174,47 +180,38 @@ public class newScheduleActivity extends AppCompatActivity{
     }
 
     /**
-     * 重写与ContextMenu相关方法
+     * 实现重复设置点击弹出设置框
      */
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        MenuInflater inflator = new MenuInflater(context);
-        inflator.inflate(R.menu.cycle_menu, menu);
-        menu.setHeaderTitle("周期");
-        super.onCreateContextMenu(menu, v, menuInfo);
-    }
+    void initcycle(){
+        //创建item
+        final String[] itemsCycle = new String[]{"每周", "每月", "每年", "自定义"};
+        new AlertDialog.Builder(context).setTitle("周期")
+                .setItems(itemsCycle, new DialogInterface.OnClickListener() {//添加列表
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(i==0)
+                            cycleInstruction.setText("每周");
+                        else if(i==1)
+                            cycleInstruction.setText("每月");
+                         else if(i==2)
+                             cycleInstruction.setText("每年");
+                         else if(i==3){
+                                final EditText cycle_editText = new EditText(context);
+                                cycle_editText.setFocusable(true);
+                                cycle_editText.setHint("输入周期（天）");
+                                new AlertDialog.Builder(context).setTitle("周期")
+                                        .setView(cycle_editText)
+                                        .setNegativeButton("取消",null)
+                                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                cycleInstruction.setText(cycle_editText.getText()+"天");
+                                            }
+                                        }).show();
+                        }
 
-    /**
-     * 重复设置上下文菜单点击事件
-     */
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_weekly:
-                cycleInstruction.setText("每周");
-                break;
-            case R.id.item_monthly:
-                cycleInstruction.setText("每月");
-                break;
-            case R.id.item_yearly:
-                cycleInstruction.setText("每年");
-                break;
-            case R.id.item_defined:
-                final EditText cycle_editText = new EditText(this);
-                cycle_editText.setFocusable(true);
-                cycle_editText.setHint("输入周期（天）");
-                new AlertDialog.Builder(this).setTitle("周期")
-                        .setView(cycle_editText)
-                        .setNegativeButton("取消",null)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                               cycleInstruction.setText(cycle_editText.getText()+"天");
-                            }
-                        }).show();
-        }
-        return true;
+                    }
+                })
+                .create().show();
     }
 
     /**
