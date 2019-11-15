@@ -14,31 +14,29 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class newScheduleActivity extends AppCompatActivity{
 
     private Context context;
-    private LinearLayout linearLayoutDate, linearLayoutcycle,linearLayoutImg,linearLayouttitle;
-    private TextView dateInstuction, timeInstruction,cycleInstruction;
+    private LinearLayout linearLayoutDate, linearLayoutcycle,linearLayoutImg,linearLayouttitle,linearLayoutmark;
+    private TextView dateInstuction, timeInstruction,cycleInstruction,markInstruction;
+
     private int year, month, day, hour, minute;
     //在TextView上显示的字符
     private StringBuffer date, time;
     //拍照相册裁剪封装类
     private SelectPictureManager selectPictureManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +68,6 @@ public class newScheduleActivity extends AppCompatActivity{
             }
         });
 
-
         //设置图片
         //初始化控件
         linearLayoutImg=findViewById(R.id.setimg);
@@ -80,6 +77,19 @@ public class newScheduleActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 initSelectPictureManager();
+            }
+        });
+
+        //添加标签
+        //初始化控件
+        linearLayoutmark=findViewById(R.id.setmark);
+        markInstruction=findViewById(R.id.text_view_markInstruction);
+        //添加标签点击事件
+        linearLayoutmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(newScheduleActivity.this, markDialogActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -246,6 +256,16 @@ public class newScheduleActivity extends AppCompatActivity{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         selectPictureManager.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 200:
+                ArrayList<String> marklist=getIntent().getStringArrayListExtra("mark");
+                if(marklist.size()!=0) {
+                    markInstruction.append("已选:");
+                    for (int i = 0; i < marklist.size() - 1; i++)
+                        markInstruction.append(marklist.get(i) + ",");
+                    markInstruction.append(marklist.get(marklist.size() - 1));
+                }
+        }
     }
 
     @Override
@@ -253,5 +273,7 @@ public class newScheduleActivity extends AppCompatActivity{
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         selectPictureManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
 
 }

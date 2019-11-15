@@ -38,5 +38,5 @@
         android:id="@+id/nav_help"
         android:icon="@drawable/help"
         android:title="@string/menu_help" />
-    
+
 </menu>
