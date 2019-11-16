@@ -8,12 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,8 +31,13 @@ public class markDialogActivity extends AppCompatActivity {
     private FlowLayout layout;
     private FlowLayout.MarginLayoutParams params;
     private Button buttonDelete,buttonCancel,buttonOk;
-    private int curIndex,lastIndex,index;
+    private int curIndex,lastIndex;
     private TextView Tag;
+    //存放标签和标签选择状态
+    final List<TextView> tagView=new ArrayList<>();
+    final List<Boolean> tagViewState=new ArrayList<>();
+    final ArrayList<String> selected=new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +53,8 @@ public class markDialogActivity extends AppCompatActivity {
         buttonCancel=(Button)findViewById(R.id.button_cancel);
         buttonOk=(Button)findViewById(R.id.button_ok);
 
-        //存放标签和标签选择状态
-        final List<TextView> tagView=new ArrayList<>();
-        final List<Boolean> tagViewState=new ArrayList<>();
+       //创建默认标签
+        initData();
 
         //创建编辑中的标签
         final EditText editText=new EditText(getApplicationContext());
@@ -137,7 +143,7 @@ public class markDialogActivity extends AppCompatActivity {
                 //没有添加标签则不继续执行
                 if (lastIndex < 0)
                     return;
-                index=0;
+                int index=0;
                 //选中状态下的标签删除
                 while(index<tagView.size()) {
                     if (tagViewState.get(index)) {
@@ -145,10 +151,10 @@ public class markDialogActivity extends AppCompatActivity {
                         tagView.remove(Tag);
                         tagViewState.remove(index);
                         layout.removeView(Tag);
-                        Toast.makeText(markDialogActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                        index++;
                     }
+                    index++;
                 }
+                Toast.makeText(markDialogActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -168,21 +174,62 @@ public class markDialogActivity extends AppCompatActivity {
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(markDialogActivity.this, newScheduleActivity.class);
-                index=0;
-                ArrayList<String> selected=new ArrayList<>();
-                while(index<tagView.size()) {
-                    Tag = tagView.get(index);
-                    if (tagViewState.get(index)) {
-                        selected.add(Tag.getText().toString().replace("√",""));
-                        index++;
-                    }
-                }
-                intent.putStringArrayListExtra("mark",selected);
-                startActivityForResult(intent,200); ;
-                finish();
+                load(tagView,tagViewState);
             }
         });
+    }
+
+    /**
+     * 设置默认标签
+     */
+
+    private void initData(){
+        final List<String> label_list=new ArrayList<>();
+        //初始化标签
+        label_list.add("生日");
+        label_list.add("学习");
+        label_list.add("工作");
+        label_list.add("节假日");
+
+        for (int i = 0; i < label_list.size() ; i++) {
+            final TextView textView = new TextView(getApplicationContext());
+            textView .setText(label_list.get(i));
+            textView .setTextSize(12);
+            //设置shape
+            textView .setBackgroundResource(R.drawable.mark_normal);
+            textView .setTextColor(Color.parseColor("#b4b4b4"));
+            textView .setLayoutParams(params);
+
+            tagView.add(textView);
+            tagViewState.add(false);
+
+            //添加点击事件，点击变成选中状态，选中状态下被点击则恢复未选中状态
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    curIndex = tagView.indexOf(textView);
+                    if (!tagViewState.get(curIndex)) {
+                        //显示 √选中
+                        textView.setText(textView.getText() + " √");
+                        textView.setBackgroundResource(R.drawable.mark_selected);
+                        textView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                        //修改选中状态
+                        tagViewState.set(curIndex, true);
+                    } else {
+                        //删除 √取消选中
+                        textView.setText(textView.getText().toString().replace("√", ""));
+                        textView.setBackgroundResource(R.drawable.mark_normal);
+                        textView.setTextColor(Color.parseColor("#b4b4b4"));
+                        //修改未选中状态
+                        tagViewState.set(curIndex, false);
+                    }
+                }
+            });
+
+            //添加到layout中
+            layout.addView(textView);
+        }
+
     }
 
     /**
@@ -201,19 +248,30 @@ public class markDialogActivity extends AppCompatActivity {
     }
 
     /**
-     * 点击空白处收起键盘
-     * @param event
-     * @return
+     * 用子进程获取选中的标签列表并传递数据
      */
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (markDialogActivity.this.getCurrentFocus().getWindowToken() != null) {
-                imm.hideSoftInputFromWindow(markDialogActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    public void load(final List<TextView> tagView, final List<Boolean> tagViewState) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int index=0;
+                while(index<tagView.size()) {
+                    Tag = tagView.get(index);
+                    if (tagViewState.get(index)) {
+                        selected.add(Tag.getText().toString().replace("√",""));
+                    }
+                    index++;
+
+                }
+                Intent intent=new Intent();
+                intent.putStringArrayListExtra("mark",selected);
+                setResult(RESULT_OK, intent);
+                finish();
             }
-        }
-        return super.onTouchEvent(event);
+        }).start();
     }
+
+
+
 
 }

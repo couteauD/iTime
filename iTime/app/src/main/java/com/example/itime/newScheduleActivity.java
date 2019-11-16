@@ -27,13 +27,18 @@ import java.util.Calendar;
 
 public class newScheduleActivity extends AppCompatActivity{
 
+    public static final int SET_MARK_CODE = 200; //设置标签
+    public static final int TAKE_PHOTO_CODE = 1000; //拍照
+    public static final int CHOOSE_PHOTO_CODE = 2000; //选择相册
+    public static final int PICTURE_CROP_CODE = 3000;  //剪切图片
+
     private Context context;
     private LinearLayout linearLayoutDate, linearLayoutcycle,linearLayoutImg,linearLayouttitle,linearLayoutmark;
     private TextView dateInstuction, timeInstruction,cycleInstruction,markInstruction;
 
     private int year, month, day, hour, minute;
     //在TextView上显示的字符
-    private StringBuffer date, time;
+    private StringBuffer date,time;
     //拍照相册裁剪封装类
     private SelectPictureManager selectPictureManager;
 
@@ -89,7 +94,7 @@ public class newScheduleActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(newScheduleActivity.this, markDialogActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, SET_MARK_CODE);
             }
         });
     }
@@ -255,16 +260,24 @@ public class newScheduleActivity extends AppCompatActivity{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        selectPictureManager.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
-            case 200:
-                ArrayList<String> marklist=getIntent().getStringArrayListExtra("mark");
-                if(marklist.size()!=0) {
-                    markInstruction.append("已选:");
-                    for (int i = 0; i < marklist.size() - 1; i++)
-                        markInstruction.append(marklist.get(i) + ",");
-                    markInstruction.append(marklist.get(marklist.size() - 1));
+            case SET_MARK_CODE:
+                if(resultCode==RESULT_OK) {
+                    ArrayList<String> marklist = data.getStringArrayListExtra("mark");
+                    StringBuilder mark = new StringBuilder();
+                    if (marklist.size() != 0) {
+                        for (int i = 0; i < marklist.size() - 1; i++)
+                            mark.append(marklist.get(i)+",");
+                        mark.append(marklist.get(marklist.size() - 1));
+                        markInstruction.setText("已选: " + mark);
+                    }
                 }
+                break;
+            case TAKE_PHOTO_CODE:
+            case CHOOSE_PHOTO_CODE:
+            case PICTURE_CROP_CODE:
+                selectPictureManager.onActivityResult(requestCode, resultCode, data);
+                break;
         }
     }
 
