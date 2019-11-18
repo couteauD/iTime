@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.itime.ui.mainpage.MainpageFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -35,12 +38,15 @@ public class newScheduleActivity extends AppCompatActivity{
     private Context context;
     private LinearLayout linearLayoutDate, linearLayoutcycle,linearLayoutImg,linearLayouttitle,linearLayoutmark;
     private TextView dateInstuction, timeInstruction,cycleInstruction,markInstruction;
+    private FloatingActionButton buttonNavOK,buttonNavBack;
+    private EditText editTextTitle,editTextRemark;
 
     private int year, month, day, hour, minute;
     //在TextView上显示的字符
     private StringBuffer date,time;
     //拍照相册裁剪封装类
     private SelectPictureManager selectPictureManager;
+    private Bitmap bitmap;
 
 
     @Override
@@ -53,6 +59,14 @@ public class newScheduleActivity extends AppCompatActivity{
         if (actionBar != null) {
             actionBar.hide();
         }
+
+        //获取输入框内容
+        //初始化控件
+        editTextTitle=findViewById(R.id.edit_text_title);
+        editTextRemark=findViewById(R.id.edit_text_remark);
+        //获取输入内容
+        final String title=editTextTitle.getText().toString();
+        final String remark=editTextRemark.getText().toString();
 
         //设置日期计算器
         context = this;
@@ -95,6 +109,35 @@ public class newScheduleActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Intent intent=new Intent(newScheduleActivity.this, markDialogActivity.class);
                 startActivityForResult(intent, SET_MARK_CODE);
+            }
+        });
+
+        //设置导航栏
+        //初始化部件
+        buttonNavBack=findViewById(R.id.nav_back);
+        buttonNavOK=findViewById(R.id.nav_ok);
+        //设置点击事件
+        buttonNavBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newScheduleActivity.this.finish();
+            }
+        });
+        buttonNavOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(title==null){
+                    Toast.makeText(context,"请输入标题",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent intent = new Intent(newScheduleActivity.this, MainpageFragment.class);
+                    intent.putExtra("title",title);
+                    intent.putExtra("remark",remark);
+                    intent.putExtra("date",dateInstuction.getText().toString());
+                    intent.putExtra("bitmap",bitmap);
+                    startActivity(intent);
+                    newScheduleActivity.this.finish();
+                }
             }
         });
     }
@@ -239,7 +282,7 @@ public class newScheduleActivity extends AppCompatActivity{
             @Override
             public void onPictureSelect(String imagePath) {
                 if(imagePath != null){
-                    Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                    bitmap = BitmapFactory.decodeFile(imagePath);
                     linearLayouttitle.setBackground( new BitmapDrawable(getResources(),bitmap));
                 }else {
                     Toast.makeText(context,"获取图片失败",Toast.LENGTH_SHORT).show();
