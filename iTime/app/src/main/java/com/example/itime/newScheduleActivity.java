@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.example.itime.ui.mainpage.MainpageFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -47,6 +49,7 @@ public class newScheduleActivity extends AppCompatActivity{
     //拍照相册裁剪封装类
     private SelectPictureManager selectPictureManager;
     private Bitmap bitmap;
+    private String title,remark;
 
 
     @Override
@@ -64,9 +67,7 @@ public class newScheduleActivity extends AppCompatActivity{
         //初始化控件
         editTextTitle=findViewById(R.id.edit_text_title);
         editTextRemark=findViewById(R.id.edit_text_remark);
-        //获取输入内容
-        final String title=editTextTitle.getText().toString();
-        final String remark=editTextRemark.getText().toString();
+
 
         //设置日期计算器
         context = this;
@@ -126,17 +127,32 @@ public class newScheduleActivity extends AppCompatActivity{
         buttonNavOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //获取输入内容
+                title=editTextTitle.getText().toString();
+                remark=editTextRemark.getText().toString();
+
                 if(title==null){
-                    Toast.makeText(context,"请输入标题",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(newScheduleActivity.this,"请输入标题",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Intent intent = new Intent(newScheduleActivity.this, MainpageFragment.class);
-                    intent.putExtra("title",title);
-                    intent.putExtra("remark",remark);
-                    intent.putExtra("date",dateInstuction.getText().toString());
-                    intent.putExtra("bitmap",bitmap);
-                    startActivity(intent);
-                    newScheduleActivity.this.finish();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent();
+                            intent.putExtra("title", title);
+                            intent.putExtra("remark", remark);
+                            intent.putExtra("date", dateInstuction.getText().toString());
+
+                            //把bitmap数据存储在btye[]数组中，然后再通过intent进行传递
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                            byte[] bitmapByte = baos.toByteArray();
+                            intent.putExtra("bitmap", bitmapByte);
+
+                            setResult(RESULT_OK, intent);
+                            newScheduleActivity.this.finish();
+                        }
+                    }).start();
                 }
             }
         });
@@ -321,6 +337,7 @@ public class newScheduleActivity extends AppCompatActivity{
             case PICTURE_CROP_CODE:
                 selectPictureManager.onActivityResult(requestCode, resultCode, data);
                 break;
+
         }
     }
 
