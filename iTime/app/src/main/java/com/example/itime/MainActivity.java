@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int SET_SCHEDULE=201;
     private AppBarConfiguration mAppBarConfiguration;
-    private Bitmap img;
+    private byte[] bitmapByte;
     private String title,date,remark;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     title = data.getStringExtra("title");
                     date = data.getStringExtra("date");
                     remark = data.getStringExtra("remark");
-
-                    byte[] bis = data.getByteArrayExtra("bitmap");
-                    img = BitmapFactory.decodeByteArray(bis, 0, bis.length);
-
+                    bitmapByte= data.getByteArrayExtra("bitmap");
                 }
                 break;
         }
@@ -84,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public Bitmap getBitmap(){
-        return img;
+    public byte[] getBitmapByte(){
+        return bitmapByte;
     }
 
     public String geTitle(){

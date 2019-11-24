@@ -2,17 +2,19 @@ package com.example.itime.model;
 
 import android.graphics.Bitmap;
 
-public class Schedule {
+import java.io.Serializable;
+
+public class Schedule implements Serializable {
     private String title;
     private String date;
     private String remark;
-    private Bitmap img;
+    private byte[] bitmapByte;
 
-    public Schedule(String title, String date, String remark, Bitmap img) {
+    public Schedule(String title, String date, String remark, byte[] bitmapByte) {
         this.setTitle(title);
         this.setDate(date);
         this.setRemark(remark);
-        this.setImg(img);
+        this.setbitmapByte(bitmapByte);
     }
 
     public String getTitle() {
@@ -39,11 +41,11 @@ public class Schedule {
         this.remark = remark;
     }
 
-    public Bitmap getImg() {
-        return img;
+    public byte[] getbitmapByte() {
+        return bitmapByte;
     }
 
-    public void setImg(Bitmap img) {
-        this.img = img;
+    public void setbitmapByte(byte[] bitmapByte) {
+        this.bitmapByte = bitmapByte;
     }
 }

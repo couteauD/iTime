@@ -9,8 +9,7 @@
         android:id="@+id/image_view_img"
         android:layout_width="300dp"
         android:layout_height="100dp"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/nav_bar_background" />
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +21,6 @@
         android:id="@+id/text_view_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="标题"
         android:textSize="20sp"
         android:textColor="@android:color/black"/>
 
@@ -30,7 +28,6 @@
         android:id="@+id/text_view_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="日期"
         android:textSize="18sp"
         android:textColor="@android:color/black"/>
 
@@ -38,7 +35,6 @@
         android:id="@+id/text_view_remark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="备注"
         android:textSize="16sp"/>
     </LinearLayout>
 </LinearLayout>
