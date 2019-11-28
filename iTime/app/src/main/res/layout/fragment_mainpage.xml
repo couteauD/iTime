@@ -7,11 +7,10 @@
     android:orientation="vertical">
 
     <com.example.itime.ui.mainpage.AutoScrollViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        tools:ignore="MissingConstraints">
-    </com.example.itime.ui.mainpage.AutoScrollViewPager>
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            tools:ignore="MissingConstraints"/>
 
     <ListView
         android:id="@+id/list_view_schedule"

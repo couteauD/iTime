@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.example.itime.MainActivity;
 import com.example.itime.R;
 import com.example.itime.ScheduleSaver;
+import com.example.itime.model.ImageFilter;
 import com.example.itime.model.Schedule;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -36,6 +37,7 @@ public class MainpageFragment extends Fragment {
     private List<Schedule> schedules = new ArrayList<>();
     private ScheduleSaver scheduleSaver;
     private ScheduleAdapter adapter;
+    private Bitmap bitmap;
 
     private AutoScrollViewPager mViewPager;
 
@@ -99,10 +101,24 @@ public class MainpageFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Schedule schedule = getItem(position);//获取当前项的实例
-            View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
+            final View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
             if(schedule.getbitmapByte()!=null) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(schedule.getbitmapByte(), 0, schedule.getbitmapByte().length);
-                ((ImageView) view.findViewById(R.id.image_view_img)).setImageBitmap(bitmap);
+
+                bitmap = BitmapFactory.decodeByteArray(schedule.getbitmapByte(), 0, schedule.getbitmapByte().length);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //高斯模糊处理图片
+                        bitmap = ImageFilter.doBlur(bitmap, 30, false);
+                        //处理完成后返回主线程
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((ImageView) view.findViewById(R.id.image_view_img)).setImageBitmap(bitmap);
+                            }
+                        });
+                    }
+                }).start();
                 ((TextView) view.findViewById(R.id.text_view_title)).setText(schedule.getTitle());
                 ((TextView) view.findViewById(R.id.text_view_date)).setText(schedule.getDate());
                 ((TextView) view.findViewById(R.id.text_view_remark)).setText(schedule.getRemark());
