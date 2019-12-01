@@ -1,4 +1,4 @@
-package com.example.itime;
+package com.example.itime.model;
 
 
 import android.content.Context;

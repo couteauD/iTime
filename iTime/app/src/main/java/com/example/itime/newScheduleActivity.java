@@ -142,6 +142,7 @@ public class newScheduleActivity extends AppCompatActivity{
                             intent.putExtra("title", title);
                             intent.putExtra("remark", remark);
                             intent.putExtra("date", dateInstuction.getText().toString());
+                            intent.putExtra("time",timeInstruction.getText().toString());
 
                             //把bitmap数据存储在btye[]数组中，然后再通过intent进行传递
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -18,11 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".CountDownActivity"></activity>
         <activity
             android:name=".markDialogActivity"
             android:theme="@style/MyDialogStyle" />
-        <activity android:name=".newScheduleActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".newScheduleActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

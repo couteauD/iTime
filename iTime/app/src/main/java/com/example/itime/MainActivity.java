@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int SET_SCHEDULE=201;
     private AppBarConfiguration mAppBarConfiguration;
     private byte[] bitmapByte;
-    private String title,date,remark;
+    private String title,date,time,remark;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 if(resultCode==RESULT_OK) {
                     title = data.getStringExtra("title");
                     date = data.getStringExtra("date");
+                    time = data.getStringExtra("time");
                     remark = data.getStringExtra("remark");
                     bitmapByte= data.getByteArrayExtra("bitmap");
                 }
@@ -91,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
 
     public String getDate(){
         return date;
+    }
+
+    public String getTime(){
+        return time;
     }
 
     public String getRemark(){

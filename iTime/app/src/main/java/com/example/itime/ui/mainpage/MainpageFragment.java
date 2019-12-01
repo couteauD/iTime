@@ -1,10 +1,10 @@
 package com.example.itime.ui.mainpage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Picture;
-import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,13 +20,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.itime.CountDownActivity;
 import com.example.itime.MainActivity;
 import com.example.itime.R;
 import com.example.itime.ScheduleSaver;
 import com.example.itime.model.ImageFilter;
 import com.example.itime.model.Schedule;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ public class MainpageFragment extends Fragment {
         }
 
         if(((MainActivity)getActivity()).geTitle()!=null) {
-            getListSchedule().add(new Schedule(((MainActivity) getActivity()).geTitle(), ((MainActivity) getActivity()).getDate(), ((MainActivity) getActivity()).getRemark(), ((MainActivity) getActivity()).getBitmapByte()));
+            getListSchedule().add(new Schedule(((MainActivity) getActivity()).geTitle(), ((MainActivity) getActivity()).getDate(), ((MainActivity) getActivity()).getTime(),((MainActivity) getActivity()).getRemark(), ((MainActivity) getActivity()).getBitmapByte()));
             adapter.notifyDataSetChanged();
         }
 
@@ -101,31 +101,36 @@ public class MainpageFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Schedule schedule = getItem(position);//获取当前项的实例
-            final View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
+            View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
+
             if(schedule.getbitmapByte()!=null) {
 
                 bitmap = BitmapFactory.decodeByteArray(schedule.getbitmapByte(), 0, schedule.getbitmapByte().length);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //高斯模糊处理图片
-                        bitmap = ImageFilter.doBlur(bitmap, 30, false);
-                        //处理完成后返回主线程
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((ImageView) view.findViewById(R.id.image_view_img)).setImageBitmap(bitmap);
-                            }
-                        });
-                    }
-                }).start();
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        //高斯模糊处理图片
+//                        bitmap = ImageFilter.doBlur(bitmap, 30, false);
+//                        //处理完成后返回主线程
+//                        getActivity().runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                ((ImageView)view.findViewById(R.id.image_view_img)).setImageBitmap(bitmap);
+//                            }
+//                        });
+//                    }
+//                }).start();
+                bitmap = ImageFilter.doBlur(bitmap, 30, false);
+                ((ImageView)view.findViewById(R.id.image_view_img)).setImageBitmap(bitmap);
                 ((TextView) view.findViewById(R.id.text_view_title)).setText(schedule.getTitle());
                 ((TextView) view.findViewById(R.id.text_view_date)).setText(schedule.getDate());
                 ((TextView) view.findViewById(R.id.text_view_remark)).setText(schedule.getRemark());
             }
+
             return view;
         }
     }
+
 
     private List<byte[]> initData() {
         List<byte[]> data = new ArrayList<>();
@@ -147,7 +152,11 @@ public class MainpageFragment extends Fragment {
 
         @Override
         public void onItemClick(int position, byte[] url) {
-            Toast.makeText(getContext(), String.valueOf(url), Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(getActivity(), CountDownActivity.class);
+            intent.putExtra("url",url);
+            intent.putExtra("date",(schedules.get(position).getDate()));
+            intent.putExtra("time",(schedules.get(position).getTime()));
+            startActivity(intent);
         }
     };
 }

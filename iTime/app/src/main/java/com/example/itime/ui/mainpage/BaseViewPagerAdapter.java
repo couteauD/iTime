@@ -85,8 +85,13 @@ public abstract class BaseViewPagerAdapter<T> extends PagerAdapter implements Vi
             }
         });
 
-        loadImage(view, position, data.get(position % getRealCount()));
-        container.addView(view);
+        if(data.size()==0){
+            view.setVisibility(View.GONE);
+        }
+        else {
+            loadImage(view, position, data.get(position % getRealCount()));
+        }
+            container.addView(view);
 
         return view;
     }

@@ -7,12 +7,14 @@ import java.io.Serializable;
 public class Schedule implements Serializable {
     private String title;
     private String date;
+    private String time;
     private String remark;
     private byte[] bitmapByte;
 
-    public Schedule(String title, String date, String remark, byte[] bitmapByte) {
+    public Schedule(String title, String date,String time, String remark, byte[] bitmapByte) {
         this.setTitle(title);
         this.setDate(date);
+        this.setTime(time);
         this.setRemark(remark);
         this.setbitmapByte(bitmapByte);
     }
@@ -31,6 +33,14 @@ public class Schedule implements Serializable {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getRemark() {
