@@ -155,7 +155,9 @@ public class newScheduleActivity extends AppCompatActivity{
                         }
                     }).start();
                 }
+
             }
+
         });
     }
 
@@ -212,7 +214,7 @@ public class newScheduleActivity extends AppCompatActivity{
                         if (date.length() > 0) { //清除上次记录的日期
                             date.delete(0, date.length());
                         }
-                        dateInstuction.setText(date.append(String.valueOf(year)).append("年").append(String.valueOf(month)).append("月").append(day).append("日"));
+                        dateInstuction.setText(date.append(String.valueOf(year)).append("年").append(String.valueOf(month+1)).append("月").append(day).append("日"));
                         dialog.dismiss();
                     }
                 });
@@ -347,7 +349,5 @@ public class newScheduleActivity extends AppCompatActivity{
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         selectPictureManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-
 
 }

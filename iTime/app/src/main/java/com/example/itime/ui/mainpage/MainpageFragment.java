@@ -106,24 +106,10 @@ public class MainpageFragment extends Fragment {
             if(schedule.getbitmapByte()!=null) {
 
                 bitmap = BitmapFactory.decodeByteArray(schedule.getbitmapByte(), 0, schedule.getbitmapByte().length);
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        //高斯模糊处理图片
-//                        bitmap = ImageFilter.doBlur(bitmap, 30, false);
-//                        //处理完成后返回主线程
-//                        getActivity().runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                ((ImageView)view.findViewById(R.id.image_view_img)).setImageBitmap(bitmap);
-//                            }
-//                        });
-//                    }
-//                }).start();
                 bitmap = ImageFilter.doBlur(bitmap, 30, false);
                 ((ImageView)view.findViewById(R.id.image_view_img)).setImageBitmap(bitmap);
                 ((TextView) view.findViewById(R.id.text_view_title)).setText(schedule.getTitle());
-                ((TextView) view.findViewById(R.id.text_view_date)).setText(schedule.getDate());
+                ((TextView)view.findViewById(R.id.text_view_date)).setText(schedule.getDate());
                 ((TextView) view.findViewById(R.id.text_view_remark)).setText(schedule.getRemark());
             }
 
@@ -153,9 +139,9 @@ public class MainpageFragment extends Fragment {
         @Override
         public void onItemClick(int position, byte[] url) {
             Intent intent=new Intent(getActivity(), CountDownActivity.class);
+            String date= schedules.get(position).getDate()+schedules.get(position).getTime();
             intent.putExtra("url",url);
-            intent.putExtra("date",(schedules.get(position).getDate()));
-            intent.putExtra("time",(schedules.get(position).getTime()));
+            intent.putExtra("date",date);
             startActivity(intent);
         }
     };
