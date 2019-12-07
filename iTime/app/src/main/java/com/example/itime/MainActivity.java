@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -28,9 +30,11 @@ import android.view.Menu;
 public class MainActivity extends AppCompatActivity {
 
     private static final int SET_SCHEDULE=201;
+    private static final int COUNTDOWN=202;
     private AppBarConfiguration mAppBarConfiguration;
     private byte[] bitmapByte;
     private String title,date,time,remark;
+    private int position=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        position=getIntent().getIntExtra("position",-1);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -73,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
                     bitmapByte= data.getByteArrayExtra("bitmap");
                 }
                 break;
+//            case COUNTDOWN:
+//
+//                break;
         }
     }
 
@@ -102,5 +112,10 @@ public class MainActivity extends AppCompatActivity {
     public String getRemark(){
         return remark;
     }
+
+    public int getPosition() {
+        return position;
+    }
+
 
 }

@@ -1,21 +1,31 @@
 package com.example.itime;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.itime.model.Schedule;
+import com.example.itime.ui.mainpage.MainpageFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class CountDownActivity extends AppCompatActivity {
+public class CountDownActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imageViewCountdownBackground;
     private TextView textViewCountdown;
@@ -23,10 +33,20 @@ public class CountDownActivity extends AppCompatActivity {
     private MyCount myCount;
     private long difference,from,to;
 
+    private FloatingActionButton buttonBack,buttonDelete,buttonShare,buttonUpdate;
+
+    private static final int COUNTDOWN=202;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_count_down);
+
+        ActionBar actionBar = getSupportActionBar();
+        //隐藏标题栏
+        if (actionBar != null) {
+            actionBar.hide();
+        }
 
         imageViewCountdownBackground = findViewById(R.id.image_view_countDownBackground);
         textViewCountdown = findViewById(R.id.text_view_countdown);
@@ -38,8 +58,17 @@ public class CountDownActivity extends AppCompatActivity {
 
         myCount = new MyCount(getTimeDifference(), 1000);
         myCount.start();
-    }
 
+        buttonBack=findViewById(R.id.back);
+        buttonBack.setOnClickListener(this);
+        buttonDelete=findViewById(R.id.delete);
+        buttonDelete.setOnClickListener(this);
+        buttonShare=findViewById(R.id.share);
+        buttonShare.setOnClickListener(this);
+        buttonUpdate=findViewById(R.id.update);
+        buttonUpdate.setOnClickListener(this);
+
+    }
 
     /*
      * 定义一个倒计时的内部类
@@ -107,4 +136,34 @@ public class CountDownActivity extends AppCompatActivity {
         }
         return 0;
     }
+
+    /**
+     * 设置顶部菜单栏的点击事件
+     */
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.back:
+               CountDownActivity.this.finish();
+               break;
+
+            case R.id.delete:
+                new AlertDialog.Builder(this)
+                        .setTitle("是否删除该计时？")
+                        .setNegativeButton("取消",null)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                int position= getIntent().getIntExtra("position",-1);
+                                Intent intent=new Intent(CountDownActivity.this,MainActivity.class);
+                                intent.putExtra("position",position);
+                                startActivity(intent);
+                                CountDownActivity.this.finish();
+                            }
+                        }).show();
+
+        }
+
+    }
+
 }

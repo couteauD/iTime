@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.itime.CountDownActivity;
@@ -31,8 +33,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public class MainpageFragment extends Fragment {
 
+    public static final int COUNTDOWN_CODE = 200;
     private ListView listViewSchedule;
     private List<Schedule> schedules = new ArrayList<>();
     private ScheduleSaver scheduleSaver;
@@ -55,6 +60,12 @@ public class MainpageFragment extends Fragment {
 
         final View root = inflater.inflate(R.layout.fragment_mainpage, container, false);
         listViewSchedule=root.findViewById(R.id.list_view_schedule);
+        listViewSchedule.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                data(i,schedules.get(i).getbitmapByte());
+            }
+        });
 
         if(schedules!=null) {
             adapter = new ScheduleAdapter(MainpageFragment.this.getContext(), R.layout.list_view_item_schedule, schedules);
@@ -80,6 +91,11 @@ public class MainpageFragment extends Fragment {
                         Picasso.with(getContext()).load(uri).into(view);
                     }
             });
+
+            if(((MainActivity) getActivity()).getPosition()!=-1){
+                schedules.remove(((MainActivity) getActivity()).getPosition());
+                adapter.notifyDataSetChanged();
+            }
 
         return root;
     }
@@ -138,11 +154,16 @@ public class MainpageFragment extends Fragment {
 
         @Override
         public void onItemClick(int position, byte[] url) {
-            Intent intent=new Intent(getActivity(), CountDownActivity.class);
-            String date= schedules.get(position).getDate()+schedules.get(position).getTime();
-            intent.putExtra("url",url);
-            intent.putExtra("date",date);
-            startActivity(intent);
+            data(position, url);
         }
     };
+
+    private void data(int position, byte[] url) {
+        Intent intent=new Intent(getActivity(), CountDownActivity.class);
+        String date= schedules.get(position).getDate()+schedules.get(position).getTime();
+        intent.putExtra("url",url);
+        intent.putExtra("date",date);
+        intent.putExtra("position",position);
+        startActivity(intent);
+    }
 }
