@@ -9,13 +9,17 @@ public class Schedule implements Serializable {
     private String date;
     private String time;
     private String remark;
+    private String cycle;
+    private String mark;
     private byte[] bitmapByte;
 
-    public Schedule(String title, String date,String time, String remark, byte[] bitmapByte) {
+    public Schedule(String title, String date,String time, String remark, String cycle,String mark,byte[] bitmapByte) {
         this.setTitle(title);
         this.setDate(date);
         this.setTime(time);
         this.setRemark(remark);
+        this.setCycle(cycle);
+        this.setMark(mark);
         this.setbitmapByte(bitmapByte);
     }
 
@@ -49,6 +53,22 @@ public class Schedule implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getCycle(){
+        return cycle;
+    }
+
+    public void setCycle(String cycle){
+        this.cycle=cycle;
+    }
+
+    public String getMark(){
+        return mark;
+    }
+
+    public void setMark(String mark){
+        this.mark=mark;
     }
 
     public byte[] getbitmapByte() {
