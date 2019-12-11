@@ -1,11 +1,13 @@
 package com.example.itime.ui.mainpage;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.itime.CountDownActivity;
@@ -46,6 +49,56 @@ public class MainpageFragment extends Fragment {
 
     private AutoScrollViewPager mViewPager;
 
+
+    /**
+     * 用来与外部activity交互的
+     */
+    private FragmentInteraction listterner;
+
+    public MainpageFragment(){}
+
+    /**
+     * 当FRagmen被加载到activity的时候会被回调
+     * @param context
+     */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if(context instanceof FragmentInteraction)
+        {
+            listterner = (FragmentInteraction)context;
+
+        }
+        else{
+            throw new IllegalArgumentException("activity must implements FragmentInteraction");
+        }
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        listterner = null;
+
+    }
+
+    /**
+     * 定义了所有activity必须实现的接口
+     */
+    public interface FragmentInteraction
+    {
+        /**
+         * Fragment 向Activity传递指令，这个方法可以根据需求来定义
+         * @param title,date,time,remark,cycle,mark,bitmap,position
+         */
+        void process(String title, String date, String time, String remark, String cycle, String mark, byte[] bitmap,int position);
+
+
+    }
+
+
     @Override
     public void  onStop(){
         super.onStop();
@@ -53,28 +106,37 @@ public class MainpageFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull final LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState) {
+
 
         scheduleSaver=new ScheduleSaver(getContext());
         schedules=scheduleSaver.load();
+    //新建日程表
+        if(getArguments()!=null) {
+            Bundle bundle = getArguments();
+            String title = bundle.getString("title");
+            String date = bundle.getString("date");
+            String time = bundle.getString("time");
+            String remark = bundle.getString("remark");
+            String cycle = bundle.getString("cycle");
+            String mark = bundle.getString("mark");
+            byte[] bitmap = bundle.getByteArray("bitmap");
+
+            schedules.add(new Schedule(title, date, time, remark, cycle, mark, bitmap));
+        }
 
         final View root = inflater.inflate(R.layout.fragment_mainpage, container, false);
         listViewSchedule=root.findViewById(R.id.list_view_schedule);
         listViewSchedule.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                data(i,schedules.get(i).getbitmapByte());
+                listterner.process(schedules.get(i).getTitle(),schedules.get(i).getDate(),schedules.get(i).getTime(),schedules.get(i).getRemark(),schedules.get(i).getCycle(),schedules.get(i).getMark(),schedules.get(i).getbitmapByte(),i);
             }
         });
 
         if(schedules!=null) {
             adapter = new ScheduleAdapter(MainpageFragment.this.getContext(), R.layout.list_view_item_schedule, schedules);
             listViewSchedule.setAdapter(adapter);
-        }
-
-        if(((MainActivity)getActivity()).geTitle()!=null) {
-            getListSchedule().add(new Schedule(((MainActivity) getActivity()).geTitle(), ((MainActivity) getActivity()).getDate(), ((MainActivity) getActivity()).getTime(),((MainActivity) getActivity()).getRemark(), ((MainActivity) getActivity()).getBitmapByte()));
-            adapter.notifyDataSetChanged();
         }
 
             //初始化AutoScrollViewPager对象
@@ -91,11 +153,6 @@ public class MainpageFragment extends Fragment {
                         Picasso.with(getContext()).load(uri).into(view);
                     }
             });
-
-            if(((MainActivity) getActivity()).getPosition()!=-1){
-                schedules.remove(((MainActivity) getActivity()).getPosition());
-                adapter.notifyDataSetChanged();
-            }
 
         return root;
     }
@@ -154,16 +211,8 @@ public class MainpageFragment extends Fragment {
 
         @Override
         public void onItemClick(int position, byte[] url) {
-            data(position, url);
+            listterner.process(schedules.get(position).getTitle(),schedules.get(position).getDate(),schedules.get(position).getTime(),schedules.get(position).getRemark(),schedules.get(position).getCycle(),schedules.get(position).getMark(),schedules.get(position).getbitmapByte(),position);
         }
     };
 
-    private void data(int position, byte[] url) {
-        Intent intent=new Intent(getActivity(), CountDownActivity.class);
-        String date= schedules.get(position).getDate()+schedules.get(position).getTime();
-        intent.putExtra("url",url);
-        intent.putExtra("date",date);
-        intent.putExtra("position",position);
-        startActivity(intent);
-    }
 }

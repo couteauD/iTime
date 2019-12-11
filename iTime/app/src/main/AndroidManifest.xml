@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".CountDownActivity"></activity>
+        <activity android:name=".CountDownActivity"
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".markDialogActivity"
             android:theme="@style/MyDialogStyle" />

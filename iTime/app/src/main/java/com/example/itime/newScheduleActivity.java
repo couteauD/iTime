@@ -140,9 +140,11 @@ public class newScheduleActivity extends AppCompatActivity{
                         public void run() {
                             Intent intent = new Intent();
                             intent.putExtra("title", title);
-                            intent.putExtra("remark", remark);
                             intent.putExtra("date", dateInstuction.getText().toString());
                             intent.putExtra("time",timeInstruction.getText().toString());
+                            intent.putExtra("remark", remark);
+                            intent.putExtra("cycle",cycleInstruction.getText().toString());
+                            intent.putExtra("mark",markInstruction.getText().toString());
 
                             //把bitmap数据存储在btye[]数组中，然后再通过intent进行传递
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -214,7 +216,7 @@ public class newScheduleActivity extends AppCompatActivity{
                         if (date.length() > 0) { //清除上次记录的日期
                             date.delete(0, date.length());
                         }
-                        dateInstuction.setText(date.append(String.valueOf(year)).append("年").append(String.valueOf(month+1)).append("月").append(day).append("日"));
+                        dateInstuction.setText(date.append(String.valueOf(year)).append("年").append(String.valueOf(month)).append("月").append(day).append("日"));
                         dialog.dismiss();
                     }
                 });

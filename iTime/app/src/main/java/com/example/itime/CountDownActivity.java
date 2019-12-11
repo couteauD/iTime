@@ -52,7 +52,7 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
         textViewCountdown = findViewById(R.id.text_view_countdown);
 
         //获取图片数据设置背景
-        byte[] url = getIntent().getByteArrayExtra("url");
+        byte[] url = getIntent().getByteArrayExtra("bitmap");
         Bitmap bitmap = BitmapFactory.decodeByteArray(url, 0, url.length);
         imageViewCountdownBackground.setImageBitmap(bitmap);
 
@@ -125,7 +125,9 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
         //获取给定时间
             @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分");//24小时制
             String date = getIntent().getStringExtra("date");
-            to = simpleDateFormat.parse(date).getTime();
+            String time=getIntent().getStringExtra("time");
+            String toDate=date+time;
+            to = simpleDateFormat.parse(toDate).getTime();
 
             //计算时间差
             difference =Math.abs(from-to);
@@ -145,8 +147,10 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.back:
-               CountDownActivity.this.finish();
-               break;
+                Intent intent=new Intent(CountDownActivity.this,MainActivity.class);
+                startActivity(intent);
+                CountDownActivity.this.finish();
+                break;
 
             case R.id.delete:
                 new AlertDialog.Builder(this)
@@ -161,6 +165,7 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
                                 CountDownActivity.this.finish();
                             }
                         }).show();
+                break;
 
         }
 
