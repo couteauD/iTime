@@ -1,5 +1,6 @@
 package com.example.itime;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,10 +33,11 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
 
     private MyCount myCount;
     private long difference,from,to;
+    private int position;
 
     private FloatingActionButton buttonBack,buttonDelete,buttonShare,buttonUpdate;
 
-    private static final int COUNTDOWN=202;
+    private static final int UPDATE_CODE=203;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,8 +149,6 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.back:
-                Intent intent=new Intent(CountDownActivity.this,MainActivity.class);
-                startActivity(intent);
                 CountDownActivity.this.finish();
                 break;
 
@@ -159,16 +159,61 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 int position= getIntent().getIntExtra("position",-1);
-                                Intent intent=new Intent(CountDownActivity.this,MainActivity.class);
-                                intent.putExtra("position",position);
-                                startActivity(intent);
+                                Intent intentDelete=new Intent();
+                                intentDelete.putExtra("position",position);
+                                setResult(RESULT_FIRST_USER,intentDelete);
                                 CountDownActivity.this.finish();
                             }
                         }).show();
                 break;
 
+            case R.id.update:
+                String title = getIntent().getStringExtra("title");
+                String date = getIntent().getStringExtra("date");
+                String time = getIntent().getStringExtra("time");
+                String remark = getIntent().getStringExtra("remark");
+                String cycle=getIntent().getStringExtra("cycle");
+                String mark=getIntent().getStringExtra("mark");
+                byte[] bitmapByte= getIntent().getByteArrayExtra("bitmap");
+                position=getIntent().getIntExtra("position",-1);
+
+                Intent intentUpdate=new Intent(CountDownActivity.this,newScheduleActivity.class);
+                intentUpdate.putExtra("title",title);
+                intentUpdate.putExtra("date",date);
+                intentUpdate.putExtra("time",time);
+                intentUpdate.putExtra("remark",remark);
+                intentUpdate.putExtra("cycle",cycle);
+                intentUpdate.putExtra("mark",mark);
+                intentUpdate.putExtra("bitmap",bitmapByte);
+
+                startActivityForResult(intentUpdate,UPDATE_CODE);
+                break;
         }
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==UPDATE_CODE && resultCode==RESULT_OK){
+            String title = data.getStringExtra("title");
+            String date = data.getStringExtra("date");
+            String time = data.getStringExtra("time");
+            String remark = data.getStringExtra("remark");
+            String cycle=data.getStringExtra("cycle");
+            String mark=data.getStringExtra("mark");
+            byte[] bitmapByte= data.getByteArrayExtra("bitmap");
+
+            Intent intent = new Intent();
+            intent.putExtra("title", title);
+            intent.putExtra("date", date);
+            intent.putExtra("time",time);
+            intent.putExtra("remark", remark);
+            intent.putExtra("cycle",cycle);
+            intent.putExtra("mark",mark);
+            intent.putExtra("bitmap", bitmapByte);
+            intent.putExtra("position",position);
+            setResult(RESULT_OK,intent);
+        }
+    }
 }

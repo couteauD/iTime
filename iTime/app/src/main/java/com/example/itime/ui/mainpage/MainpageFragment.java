@@ -111,19 +111,6 @@ public class MainpageFragment extends Fragment {
 
         scheduleSaver=new ScheduleSaver(getContext());
         schedules=scheduleSaver.load();
-    //新建日程表
-        if(getArguments()!=null) {
-            Bundle bundle = getArguments();
-            String title = bundle.getString("title");
-            String date = bundle.getString("date");
-            String time = bundle.getString("time");
-            String remark = bundle.getString("remark");
-            String cycle = bundle.getString("cycle");
-            String mark = bundle.getString("mark");
-            byte[] bitmap = bundle.getByteArray("bitmap");
-
-            schedules.add(new Schedule(title, date, time, remark, cycle, mark, bitmap));
-        }
 
         final View root = inflater.inflate(R.layout.fragment_mainpage, container, false);
         listViewSchedule=root.findViewById(R.id.list_view_schedule);
@@ -139,7 +126,34 @@ public class MainpageFragment extends Fragment {
             listViewSchedule.setAdapter(adapter);
         }
 
-            //初始化AutoScrollViewPager对象
+
+        //新建日程表
+        if(getArguments()!=null) {
+            Bundle bundle = getArguments();
+            String title = bundle.getString("title");
+            String date = bundle.getString("date");
+            String time = bundle.getString("time");
+            String remark = bundle.getString("remark");
+            String cycle = bundle.getString("cycle");
+            String mark = bundle.getString("mark");
+            byte[] bitmap = bundle.getByteArray("bitmap");
+            int position=bundle.getInt("position",-1);
+
+            if(title!=null) {
+                if(position!=-1){
+                    schedules.set(position,new Schedule(title,date,time, remark, cycle, mark, bitmap));
+                }
+                else {
+                    schedules.add(new Schedule(title, date, time, remark, cycle, mark, bitmap));
+                }
+            }
+            if(title==null && position!=-1){
+                schedules.remove(position);
+                adapter.notifyDataSetChanged();
+            }
+        }
+
+        //初始化AutoScrollViewPager对象
             mViewPager = (AutoScrollViewPager) root.findViewById(R.id.viewPager);
             //设置Adapter，这里需要重写loadImage方法，在里面加载图片
             mViewPager.setAdapter(new BaseViewPagerAdapter<byte[]>(getContext(), initData(), listener) {

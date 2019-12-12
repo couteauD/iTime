@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,11 +46,11 @@ public class newScheduleActivity extends AppCompatActivity{
 
     private int year, month, day, hour, minute;
     //在TextView上显示的字符
-    private StringBuffer date,time;
+    private StringBuffer stringBuffer_date,stringBuffer_time;
     //拍照相册裁剪封装类
     private SelectPictureManager selectPictureManager;
     private Bitmap bitmap;
-    private String title,remark;
+    private String title,date,time,cycle,mark,remark;
 
 
     @Override
@@ -63,6 +64,7 @@ public class newScheduleActivity extends AppCompatActivity{
             actionBar.hide();
         }
 
+
         //获取输入框内容
         //初始化控件
         editTextTitle=findViewById(R.id.edit_text_title);
@@ -71,8 +73,8 @@ public class newScheduleActivity extends AppCompatActivity{
 
         //设置日期计算器
         context = this;
-        date = new StringBuffer();
-        time = new StringBuffer();
+        stringBuffer_date= new StringBuffer();
+        stringBuffer_time = new StringBuffer();
         initDateView();
         initDateTime();
 
@@ -161,6 +163,31 @@ public class newScheduleActivity extends AppCompatActivity{
             }
 
         });
+//更新编辑好的数据
+        init();
+    }
+
+    @SuppressLint("NewApi")
+    private void init() {
+        if(getIntent()!=null){
+            title=getIntent().getStringExtra("title");
+            date=getIntent().getStringExtra("date");
+            time=getIntent().getStringExtra("time");
+            remark=getIntent().getStringExtra("remark");
+            cycle=getIntent().getStringExtra("cycle");
+            mark=getIntent().getStringExtra("mark");
+
+            editTextTitle.setText(title);
+            dateInstuction.setText(date);
+            timeInstruction.setText(time);
+            editTextRemark.setText(remark);
+            cycleInstruction.setText(cycle);
+            markInstruction.setText(mark);
+
+            byte[] bitmapByte=getIntent().getByteArrayExtra("bitmap");
+            bitmap = BitmapFactory.decodeByteArray(bitmapByte,0, bitmapByte.length);
+            linearLayouttitle.setBackground( new BitmapDrawable(getResources(),bitmap));
+        }
     }
 
     /**
@@ -177,10 +204,10 @@ public class newScheduleActivity extends AppCompatActivity{
                 builder2.setPositiveButton("设置", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (time.length() > 0) { //清除上次记录的日期
-                            time.delete(0, time.length());
+                        if (stringBuffer_time.length() > 0) { //清除上次记录的日期
+                            stringBuffer_time.delete(0, stringBuffer_time.length());
                         }
-                        timeInstruction.setText(time.append(String.valueOf(hour)).append("时").append(String.valueOf(minute)).append("分"));
+                        timeInstruction.setText(stringBuffer_time.append(String.valueOf(hour)).append("时").append(String.valueOf(minute)).append("分"));
                         dialog.dismiss();
                     }
                 });
@@ -213,10 +240,10 @@ public class newScheduleActivity extends AppCompatActivity{
                 builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (date.length() > 0) { //清除上次记录的日期
-                            date.delete(0, date.length());
+                        if (stringBuffer_date.length() > 0) { //清除上次记录的日期
+                            stringBuffer_date.delete(0,stringBuffer_date.length());
                         }
-                        dateInstuction.setText(date.append(String.valueOf(year)).append("年").append(String.valueOf(month)).append("月").append(day).append("日"));
+                        dateInstuction.setText(stringBuffer_date.append(String.valueOf(year)).append("年").append(String.valueOf(month)).append("月").append(day).append("日"));
                         dialog.dismiss();
                     }
                 });
@@ -351,5 +378,7 @@ public class newScheduleActivity extends AppCompatActivity{
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         selectPictureManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
 
 }

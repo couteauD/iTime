@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements MainpageFragment.
     private AppBarConfiguration mAppBarConfiguration;
     private byte[] bitmapByte;
     private String title,date,time,remark,cycle,mark;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,53 @@ public class MainActivity extends AppCompatActivity implements MainpageFragment.
                     transation.commit();
                 }
                 break;
+
+            case COUNTDOWN:
+                if(resultCode==RESULT_FIRST_USER){
+                    int position=data.getIntExtra("position",-1);
+
+                    FragmentManager manager=getSupportFragmentManager();
+                    FragmentTransaction transation = manager.beginTransaction();
+                    MainpageFragment mainpageFragment=new MainpageFragment();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("position",position);
+
+                    mainpageFragment.setArguments(bundle);
+                    transation.replace(R.id.nav_host_fragment,mainpageFragment);
+                    transation.addToBackStack(null);
+                    transation.commit();
+                }
+                if(resultCode==RESULT_OK){
+                    title = data.getStringExtra("title");
+                    date = data.getStringExtra("date");
+                    time = data.getStringExtra("time");
+                    remark = data.getStringExtra("remark");
+                    cycle=data.getStringExtra("cycle");
+                    mark=data.getStringExtra("mark");
+                    bitmapByte= data.getByteArrayExtra("bitmap");
+                    position=data.getIntExtra("position",-1);
+
+                    FragmentManager manager=getSupportFragmentManager();
+                    FragmentTransaction transation = manager.beginTransaction();
+                    MainpageFragment mainpageFragment=new MainpageFragment();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title",title);
+                    bundle.putString("date",date);
+                    bundle.putString("time",time);
+                    bundle.putString("remark",remark);
+                    bundle.putString("cycle",cycle);
+                    bundle.putString("mark",mark);
+                    bundle.putByteArray("bitmap",bitmapByte);
+                    bundle.putInt("position",position);
+
+                    mainpageFragment.setArguments(bundle);
+                    transation.replace(R.id.nav_host_fragment,mainpageFragment);
+                    transation.addToBackStack(null);
+                    transation.commit();
+                }
+                break;
         }
     }
 
@@ -129,8 +177,6 @@ public class MainActivity extends AppCompatActivity implements MainpageFragment.
             intent.putExtra("bitmap",bitmap);
             intent.putExtra("position",position);
             startActivityForResult(intent,COUNTDOWN);
-            MainActivity.this.finish();
-
         }
     }
 }
