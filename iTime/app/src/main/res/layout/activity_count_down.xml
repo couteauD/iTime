@@ -63,14 +63,39 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/text_view_countdown"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/text_view_countdown_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="主题"
+                android:textSize="30dp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/text_view_countdown_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="日期"
+                android:textSize="30dp"
+                android:paddingTop="15dp"
+                android:textColor="@android:color/white"/>
+
+
+            <TextView
+            android:id="@+id/text_view_countdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="测试文字"
             android:textSize="30dp"
+                android:paddingTop="15dp"
             android:textColor="@android:color/white"/>
+        </LinearLayout>
 
     </RelativeLayout>
 

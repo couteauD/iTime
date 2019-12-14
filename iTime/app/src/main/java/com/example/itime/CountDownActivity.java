@@ -29,7 +29,7 @@ import java.util.List;
 public class CountDownActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imageViewCountdownBackground;
-    private TextView textViewCountdown;
+    private TextView textViewCountdown,textViewTitle,textViewDate;
 
     private MyCount myCount;
     private long difference,from,to;
@@ -52,11 +52,19 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
 
         imageViewCountdownBackground = findViewById(R.id.image_view_countDownBackground);
         textViewCountdown = findViewById(R.id.text_view_countdown);
+        textViewTitle=findViewById(R.id.text_view_countdown_title);
+        textViewDate=findViewById(R.id.text_view_countdown_date);
 
         //获取图片数据设置背景
         byte[] url = getIntent().getByteArrayExtra("bitmap");
         Bitmap bitmap = BitmapFactory.decodeByteArray(url, 0, url.length);
         imageViewCountdownBackground.setImageBitmap(bitmap);
+
+        //获取日程信息
+        String title=getIntent().getStringExtra("title");
+        textViewTitle.setText(title);
+        String date=getIntent().getStringExtra("date")+getIntent().getStringExtra("time");
+        textViewDate.setText(date);
 
         myCount = new MyCount(getTimeDifference(), 1000);
         myCount.start();
@@ -89,20 +97,11 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
         @SuppressLint("SetTextI18n")
         @Override
         public void onTick(long millisUntilFinished) {
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.setTimeInMillis(millisUntilFinished);
-            int year = calendar2.get(Calendar.YEAR);
-            if(year==1970){
-                year=0;
-            }
-            int month = calendar2.get(Calendar.MONTH);
-            int day = calendar2.get(Calendar.DAY_OF_MONTH);
-            int hour = calendar2.get(Calendar.HOUR_OF_DAY);//24小时制
-            int minute = calendar2.get(Calendar.MINUTE);
-            int second = calendar2.get(Calendar.SECOND);
-
-           textViewCountdown.setText(year + "年" + month + "月" + day + "日"
-                    + hour + "时" + minute + "分" + second + "秒");
+            long days = millisUntilFinished / (1000 * 60 * 60 * 24);
+            long hours = (millisUntilFinished % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+            long minutes = (millisUntilFinished % (1000 * 60 * 60)) / (1000 * 60);
+            long seconds = (millisUntilFinished % (1000 * 60)) / 1000;
+            textViewCountdown.setText(days + " 天 " + hours + "小时 " + minutes + " 分钟 " + seconds + "秒");
         }
     }
 

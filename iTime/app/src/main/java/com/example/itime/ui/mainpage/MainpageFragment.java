@@ -1,13 +1,10 @@
 package com.example.itime.ui.mainpage;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -18,29 +15,25 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.itime.CountDownActivity;
-import com.example.itime.MainActivity;
 import com.example.itime.R;
 import com.example.itime.ScheduleSaver;
 import com.example.itime.model.ImageFilter;
 import com.example.itime.model.Schedule;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
 
 public class MainpageFragment extends Fragment {
 
-    public static final int COUNTDOWN_CODE = 200;
     private ListView listViewSchedule;
     private List<Schedule> schedules = new ArrayList<>();
     private ScheduleSaver scheduleSaver;
@@ -149,8 +142,8 @@ public class MainpageFragment extends Fragment {
             }
             if(title==null && position!=-1){
                 schedules.remove(position);
-                adapter.notifyDataSetChanged();
             }
+            adapter.notifyDataSetChanged();
         }
 
         //初始化AutoScrollViewPager对象
@@ -198,6 +191,8 @@ public class MainpageFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.text_view_title)).setText(schedule.getTitle());
                 ((TextView)view.findViewById(R.id.text_view_date)).setText(schedule.getDate());
                 ((TextView) view.findViewById(R.id.text_view_remark)).setText(schedule.getRemark());
+                int day=initTimeDifference(schedule.getDate(),schedule.getTime());
+                ((TextView) view.findViewById(R.id.text_view_img)).setText(day+"天");
             }
 
             return view;
@@ -228,5 +223,38 @@ public class MainpageFragment extends Fragment {
             listterner.process(schedules.get(position).getTitle(),schedules.get(position).getDate(),schedules.get(position).getTime(),schedules.get(position).getRemark(),schedules.get(position).getCycle(),schedules.get(position).getMark(),schedules.get(position).getbitmapByte(),position);
         }
     };
+
+    /*
+     * 设置默认图片上的倒计时时间
+     */
+    private int initTimeDifference(String date,String time) {
+        try {
+            //获取当前系统时间
+            Calendar calendar = Calendar.getInstance();
+            int fromYear = calendar.get(Calendar.YEAR);
+            int fromMonth = calendar.get(Calendar.MONTH) + 1;
+            int fromDay = calendar.get(Calendar.DAY_OF_MONTH);
+            int fromHour = calendar.get(Calendar.HOUR);
+            int fromMinute = calendar.get(Calendar.MINUTE);
+
+            Calendar fromdate = Calendar.getInstance();
+            fromdate.set(fromYear, fromMonth, fromDay, fromHour, fromMinute, 0);
+            long from=fromdate.getTimeInMillis();
+
+            //获取给定时间
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分");//24小时制
+            String toDate=date+time;
+            long to = simpleDateFormat.parse(toDate).getTime();
+
+            //计算时间差
+            long difference =Math.abs(from-to);
+            int dayNum= (int) difference / (1000 * 60 * 60 * 24);
+
+            return dayNum;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 }

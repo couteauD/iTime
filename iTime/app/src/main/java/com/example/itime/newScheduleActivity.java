@@ -15,7 +15,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.itime.ui.mainpage.MainpageFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
@@ -163,13 +161,13 @@ public class newScheduleActivity extends AppCompatActivity{
             }
 
         });
-//更新编辑好的数据
+        //更新编辑好的数据
         init();
     }
 
     @SuppressLint("NewApi")
     private void init() {
-        if(getIntent()!=null){
+        if(getIntent().getStringExtra("title")!=null){
             title=getIntent().getStringExtra("title");
             date=getIntent().getStringExtra("date");
             time=getIntent().getStringExtra("time");
@@ -194,9 +192,9 @@ public class newScheduleActivity extends AppCompatActivity{
      * 初始化日期控件
      */
     private void initDateView() {
-        linearLayoutDate = (LinearLayout) findViewById(R.id.setdate);
-        dateInstuction = (TextView) findViewById(R.id.text_view_dateInstruction);
-        timeInstruction = (TextView) findViewById(R.id.text_view_timeInstruction);
+        linearLayoutDate = findViewById(R.id.setdate);
+        dateInstuction = findViewById(R.id.text_view_dateInstruction);
+        timeInstruction = findViewById(R.id.text_view_timeInstruction);
         linearLayoutDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -243,7 +241,7 @@ public class newScheduleActivity extends AppCompatActivity{
                         if (stringBuffer_date.length() > 0) { //清除上次记录的日期
                             stringBuffer_date.delete(0,stringBuffer_date.length());
                         }
-                        dateInstuction.setText(stringBuffer_date.append(String.valueOf(year)).append("年").append(String.valueOf(month)).append("月").append(day).append("日"));
+                        dateInstuction.setText(stringBuffer_date.append(String.valueOf(year)).append("年").append(String.valueOf(month+1)).append("月").append(day).append("日"));
                         dialog.dismiss();
                     }
                 });
@@ -378,7 +376,5 @@ public class newScheduleActivity extends AppCompatActivity{
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         selectPictureManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-
 
 }
