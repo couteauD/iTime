@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements MainpageFragment.
     private static final int SET_SCHEDULE=201;
     private static final int COUNTDOWN=202;
     private AppBarConfiguration mAppBarConfiguration;
+    private appThemeSaver appthemeSaver;
     private byte[] bitmapByte;
     private String title,date,time,remark,cycle,mark;
     private int position;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements MainpageFragment.
         super.onCreate(savedInstanceState);
 
         Myapp app = (Myapp)getApplication();
+        appthemeSaver=new appThemeSaver(this);
+        app.theme=appthemeSaver.load();
         if(app.theme == 0){
             //使用默认主题
         }else{

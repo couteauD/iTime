@@ -24,6 +24,7 @@ public class markDialogActivity extends AppCompatActivity {
 
     private FlowLayout layout;
     private FlowLayout.MarginLayoutParams params;
+    private appThemeSaver appthemeSaver;
     private Button buttonDelete,buttonCancel,buttonOk;
     private int curIndex,lastIndex;
     private TextView Tag;
@@ -32,11 +33,12 @@ public class markDialogActivity extends AppCompatActivity {
     final List<Boolean> tagViewState=new ArrayList<>();
     final ArrayList<String> selected=new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Myapp app = (Myapp)getApplication();
+        appthemeSaver=new appThemeSaver(this);
+        app.theme=appthemeSaver.load();
         if(app.theme == 0){
             //使用默认主题
         }else{

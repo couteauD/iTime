@@ -37,6 +37,7 @@ public class newScheduleActivity extends AppCompatActivity{
     public static final int CHOOSE_PHOTO_CODE = 2000; //选择相册
     public static final int PICTURE_CROP_CODE = 3000;  //剪切图片
 
+    private appThemeSaver appthemeSaver;
     private Context context;
     private LinearLayout linearLayoutDate, linearLayoutcycle,linearLayoutImg,linearLayouttitle,linearLayoutmark;
     private TextView dateInstuction, timeInstruction,cycleInstruction,markInstruction;
@@ -51,13 +52,14 @@ public class newScheduleActivity extends AppCompatActivity{
     private Bitmap bitmap;
     private String title,date,time,cycle,mark,remark;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Myapp app = (Myapp)getApplication();
-        if(app.theme == 0){
+        appthemeSaver=new appThemeSaver(this);
+        app.theme=appthemeSaver.load();
+        if(app.theme==0){
             //使用默认主题
         }else{
             //使用自定义的主题

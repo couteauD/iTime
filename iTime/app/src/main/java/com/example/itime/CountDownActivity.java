@@ -29,6 +29,7 @@ import java.util.List;
 
 public class CountDownActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private appThemeSaver appthemeSaver;
     private ImageView imageViewCountdownBackground;
     private TextView textViewCountdown,textViewTitle,textViewDate;
 
@@ -45,6 +46,8 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
 
         Myapp app = (Myapp)getApplication();
+        appthemeSaver=new appThemeSaver(this);
+        app.theme=appthemeSaver.load();
         if(app.theme == 0){
             //使用默认主题
         }else{

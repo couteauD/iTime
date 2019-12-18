@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.itime.R;
+import com.example.itime.appThemeSaver;
 
 
 public class colorFrament extends Fragment implements View.OnClickListener{
@@ -45,37 +46,46 @@ public class colorFrament extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         Myapp app = (Myapp)getActivity().getApplication();
+        appThemeSaver appthemeSaver=new appThemeSaver(getContext());
         switch (view.getId()) {
             case R.id.button_blue:
                 app.theme = R.style.AppTheme;
+                appthemeSaver.save(app.theme);
                 getActivity().recreate();
                 break;
             case R.id.button_pink:
                 app.theme = R.style.pink;
+                appthemeSaver.save(app.theme);
                 getActivity().recreate();
                 break;
             case R.id.button_red:
                 app.theme = R.style.red;
+                appthemeSaver.save(app.theme);
                 getActivity().recreate();
                 break;
             case R.id.button_green:
                 app.theme = R.style.green;
+                appthemeSaver.save(app.theme);
                 getActivity().recreate();
                 break;
             case R.id.button_yellow:
                 app.theme = R.style.yellow;
+                appthemeSaver.save(app.theme);
                 getActivity().recreate();
                 break;
             case R.id.button_purple:
                 app.theme = R.style.purple;
+                appthemeSaver.save(app.theme);
                 getActivity().recreate();
                 break;
             case R.id.button_gray:
                 app.theme = R.style.gray;
+                appthemeSaver.save(app.theme);
                 getActivity().recreate();
                 break;
             case R.id.button_black:
                 app.theme = R.style.black;
+                appthemeSaver.save(app.theme);
                 getActivity().recreate();
                 break;
 
