@@ -1,19 +1,20 @@
 package com.example.itime;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+
+import android.app.Application;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import com.example.itime.ui.color.Myapp;
+import com.example.itime.ui.color.colorFrament;
 import com.example.itime.ui.mainpage.MainpageFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -26,11 +27,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.view.Menu;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainpageFragment.FragmentInteraction{
 
@@ -44,7 +41,16 @@ public class MainActivity extends AppCompatActivity implements MainpageFragment.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Myapp app = (Myapp)getApplication();
+        if(app.theme == 0){
+            //使用默认主题
+        }else{
+            //使用自定义的主题
+            setTheme(app.theme);
+        }
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);

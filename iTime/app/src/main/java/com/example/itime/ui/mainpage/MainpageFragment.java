@@ -212,7 +212,8 @@ public class MainpageFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         //记得在销毁的时候调用onDestroy()方法。用来销毁定时器。
-        mViewPager.onDestroy();
+        if(mViewPager!=null)
+             mViewPager.onDestroy();
     }
 
     //定义点击事件

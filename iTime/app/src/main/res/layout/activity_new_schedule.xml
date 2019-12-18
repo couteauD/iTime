@@ -10,7 +10,7 @@
         android:id="@+id/linearLayout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="?img_bg"
         android:orientation="vertical">
 
         <ImageView

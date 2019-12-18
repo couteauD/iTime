@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="img_bg">@color/colorPrimaryDark</item>
+        <item name="text_cl">@color/colorAccent</item>
+
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -24,4 +27,82 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>   设置Activity出现方式
         <item name="android:backgroundDimEnabled">true</item>        背景是否模糊显示
     </style>
+
+    <!--更换主题颜色-->
+    <style name="pink" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#FFAEB9</item>
+        <item name="colorPrimaryDark">#FF82AB</item>
+        <item name="colorAccent">#FFAEB9</item>
+        <item name="img_bg">#FF82AB</item>
+        <item name="text_cl">#FFAEB9</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <style name="red" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#F85F5F</item>
+        <item name="colorPrimaryDark">#FF0000</item>
+        <item name="colorAccent">#F85F5F</item>
+        <item name="img_bg">#FF0000</item>
+        <item name="text_cl">#F85F5F</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <style name="green" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#43CD80</item>
+        <item name="colorPrimaryDark">#3CB371</item>
+        <item name="colorAccent">#43CD80</item>
+        <item name="img_bg">#3CB371</item>
+        <item name="text_cl">#43CD80</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <style name="yellow" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#EEE685</item>
+        <item name="colorPrimaryDark">#EEEE00</item>
+        <item name="colorAccent">#EEE685</item>
+        <item name="img_bg">#EEEE00</item>
+        <item name="text_cl">#EEE685</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <style name="purple" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#BF3EFF</item>
+        <item name="colorPrimaryDark">#B452CD</item>
+        <item name="colorAccent">#BF3EFF</item>
+        <item name="img_bg">#B452CD</item>
+        <item name="text_cl">#BF3EFF</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <style name="gray" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#C9C9C9</item>
+        <item name="colorPrimaryDark">#A8A8A8</item>
+        <item name="colorAccent">#C9C9C9</item>
+        <item name="img_bg">#A8A8A8</item>
+        <item name="text_cl">#C9C9C9</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <style name="black" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#000000</item>
+        <item name="img_bg">#000000</item>
+        <item name="text_cl">#000000</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 </resources>

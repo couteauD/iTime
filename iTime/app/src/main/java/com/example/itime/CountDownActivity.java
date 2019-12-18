@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.itime.model.Schedule;
+import com.example.itime.ui.color.Myapp;
 import com.example.itime.ui.mainpage.MainpageFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -42,6 +43,14 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Myapp app = (Myapp)getApplication();
+        if(app.theme == 0){
+            //使用默认主题
+        }else{
+            //使用自定义的主题
+            setTheme(app.theme);
+        }
         setContentView(R.layout.activity_count_down);
 
         ActionBar actionBar = getSupportActionBar();

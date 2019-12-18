@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.itime.model.FlowLayout;
+import com.example.itime.ui.color.Myapp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,13 @@ public class markDialogActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Myapp app = (Myapp)getApplication();
+        if(app.theme == 0){
+            //使用默认主题
+        }else{
+            //使用自定义的主题
+            setTheme(app.theme);
+        }
         setContentView(R.layout.activity_mark_dialog_activity);
 
         layout=(FlowLayout) findViewById(R.id.mark_container);
