@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-        <attr name="img_bg" format="reference|color" />
-        <attr name="text_cl" format="reference|color" />
-</resources>

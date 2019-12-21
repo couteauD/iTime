@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.itime.model.FlowLayout;
-import com.example.itime.ui.color.Myapp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +32,15 @@ public class markDialogActivity extends AppCompatActivity {
     final List<Boolean> tagViewState=new ArrayList<>();
     final ArrayList<String> selected=new ArrayList<>();
 
+    private int themeColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Myapp app = (Myapp)getApplication();
+
         appthemeSaver=new appThemeSaver(this);
-        app.theme=appthemeSaver.load();
-        if(app.theme == 0){
-            //使用默认主题
-        }else{
-            //使用自定义的主题
-            setTheme(app.theme);
-        }
+        themeColor=appthemeSaver.load();
+
         setContentView(R.layout.activity_mark_dialog_activity);
 
         layout=(FlowLayout) findViewById(R.id.mark_container);
@@ -68,7 +64,7 @@ public class markDialogActivity extends AppCompatActivity {
         //设置shape
         editText.setBackgroundResource(R.drawable.mark_edit);
         editText.setHintTextColor(Color.parseColor("#b4b4b4"));
-        editText.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        editText.setTextColor(themeColor);
         editText.setLayoutParams(params);
 
         //添加到layout中
@@ -108,8 +104,8 @@ public class markDialogActivity extends AppCompatActivity {
                                     if (!tagViewState.get(curIndex)) {
                                         //显示 √选中
                                         temp.setText(temp.getText() + " √");
-                                        temp.setBackgroundResource(R.drawable.mark_selected);
-                                        temp.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                                        temp.setBackgroundResource(themeColor);
+                                        temp.setTextColor(getResources().getColor(themeColor));
                                         //修改选中状态
                                         tagViewState.set(curIndex, true);
                                     } else {
@@ -214,8 +210,8 @@ public class markDialogActivity extends AppCompatActivity {
                     if (!tagViewState.get(curIndex)) {
                         //显示 √选中
                         textView.setText(textView.getText() + " √");
-                        textView.setBackgroundResource(R.drawable.mark_selected);
-                        textView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                        textView.setBackgroundColor(themeColor);
+                        textView.setTextColor(themeColor);
                         //修改选中状态
                         tagViewState.set(curIndex, true);
                     } else {

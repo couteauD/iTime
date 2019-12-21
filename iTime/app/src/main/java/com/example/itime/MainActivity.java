@@ -1,17 +1,18 @@
 package com.example.itime;
 
 
-import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
-import android.app.Application;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 
-import com.example.itime.ui.color.Myapp;
-import com.example.itime.ui.color.colorFrament;
 import com.example.itime.ui.mainpage.MainpageFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -43,20 +44,21 @@ public class MainActivity extends AppCompatActivity implements MainpageFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Myapp app = (Myapp)getApplication();
         appthemeSaver=new appThemeSaver(this);
-        app.theme=appthemeSaver.load();
-        if(app.theme == 0){
-            //使用默认主题
-        }else{
-            //使用自定义的主题
-            setTheme(app.theme);
-        }
+        int themeColor=appthemeSaver.load();
         setContentView(R.layout.activity_main);
 
+        //状态栏设置
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(themeColor);
+        }
+        //标题栏设置
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(themeColor);
         setSupportActionBar(toolbar);
+
         FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setBackgroundTintList(createColorStateList(themeColor, themeColor, themeColor, themeColor));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,8 +66,10 @@ public class MainActivity extends AppCompatActivity implements MainpageFragment.
                 startActivityForResult(intent,SET_SCHEDULE);
             }
         });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setItemTextColor(createColorStateList(Color.BLACK, themeColor, themeColor, themeColor));
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -187,5 +191,19 @@ public class MainActivity extends AppCompatActivity implements MainpageFragment.
             intent.putExtra("position",position);
             startActivityForResult(intent,COUNTDOWN);
         }
+    }
+
+    //fab动态设置颜色
+    private ColorStateList createColorStateList(int normal, int pressed, int focused, int unable) {
+        int[] colors = new int[] { pressed, focused, normal, focused, unable, normal };
+        int[][] states = new int[6][];
+        states[0] = new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled };
+        states[1] = new int[] { android.R.attr.state_enabled, android.R.attr.state_focused };
+        states[2] = new int[] { android.R.attr.state_enabled };
+        states[3] = new int[] { android.R.attr.state_focused };
+        states[4] = new int[] { android.R.attr.state_window_focused };
+        states[5] = new int[] {};
+        ColorStateList colorList = new ColorStateList(states, colors);
+        return colorList;
     }
 }

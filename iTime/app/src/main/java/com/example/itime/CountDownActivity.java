@@ -10,22 +10,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.itime.model.Schedule;
-import com.example.itime.ui.color.Myapp;
-import com.example.itime.ui.mainpage.MainpageFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class CountDownActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -41,20 +37,21 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
 
     private static final int UPDATE_CODE=203;
 
+    private int themeColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Myapp app = (Myapp)getApplication();
         appthemeSaver=new appThemeSaver(this);
-        app.theme=appthemeSaver.load();
-        if(app.theme == 0){
-            //使用默认主题
-        }else{
-            //使用自定义的主题
-            setTheme(app.theme);
-        }
+        themeColor=appthemeSaver.load();
+
         setContentView(R.layout.activity_count_down);
+
+        //状态栏设置
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(themeColor);
+        }
 
         ActionBar actionBar = getSupportActionBar();
         //隐藏标题栏

@@ -1,94 +1,84 @@
 package com.example.itime.ui.color;
 
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.PorterDuff;
+import android.graphics.Shader;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.itime.R;
 import com.example.itime.appThemeSaver;
 
 
-public class colorFrament extends Fragment implements View.OnClickListener{
+public class colorFrament extends DialogFragment {
 
-    private Button buttonBlue,buttonPink,buttonRed,buttonGreen,buttonYellow,buttonPurple,buttonGray,buttonBlack;
+    private SeekBar mSbColor;
+    private ColorSeekBar mColorSeekBar;
+    private appThemeSaver appThemeSaver;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_color, container, false);
+        mSbColor=root.findViewById(R.id.seekbar);
+        mColorSeekBar=new ColorSeekBar();
+        appThemeSaver=new appThemeSaver(getContext());
+        //设置SeekBar的颜色
+        initColorBar();
 
-        buttonBlue=root.findViewById(R.id.button_blue);
-        buttonPink=root.findViewById(R.id.button_pink);
-        buttonRed=root.findViewById(R.id.button_red);
-        buttonGreen=root.findViewById(R.id.button_green);
-        buttonYellow=root.findViewById(R.id.button_yellow);
-        buttonPurple=root.findViewById(R.id.button_purple);
-        buttonGray=root.findViewById(R.id.button_gray);
-        buttonBlack=root.findViewById(R.id.button_black);
+       //当SeekBar被滑动时,获取颜色
+        mSbColor.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                float radio = (float)progress / mSbColor.getMax();
+                int mColor = mColorSeekBar.getColor(radio);
+                mSbColor.getThumb().setColorFilter(mColor, PorterDuff.Mode.SRC_ATOP);
+                //储存颜色
+                appThemeSaver.save(mColor);
+            }
 
-        buttonBlue.setOnClickListener(this);
-        buttonPink.setOnClickListener(this);
-        buttonRed.setOnClickListener(this);
-        buttonGreen.setOnClickListener(this);
-        buttonYellow.setOnClickListener(this);
-        buttonPurple.setOnClickListener(this);
-        buttonGray.setOnClickListener(this);
-        buttonBlack.setOnClickListener(this);
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         return root;
     }
 
-    @Override
-    public void onClick(View view) {
-        Myapp app = (Myapp)getActivity().getApplication();
-        appThemeSaver appthemeSaver=new appThemeSaver(getContext());
-        switch (view.getId()) {
-            case R.id.button_blue:
-                app.theme = R.style.AppTheme;
-                appthemeSaver.save(app.theme);
-                getActivity().recreate();
-                break;
-            case R.id.button_pink:
-                app.theme = R.style.pink;
-                appthemeSaver.save(app.theme);
-                getActivity().recreate();
-                break;
-            case R.id.button_red:
-                app.theme = R.style.red;
-                appthemeSaver.save(app.theme);
-                getActivity().recreate();
-                break;
-            case R.id.button_green:
-                app.theme = R.style.green;
-                appthemeSaver.save(app.theme);
-                getActivity().recreate();
-                break;
-            case R.id.button_yellow:
-                app.theme = R.style.yellow;
-                appthemeSaver.save(app.theme);
-                getActivity().recreate();
-                break;
-            case R.id.button_purple:
-                app.theme = R.style.purple;
-                appthemeSaver.save(app.theme);
-                getActivity().recreate();
-                break;
-            case R.id.button_gray:
-                app.theme = R.style.gray;
-                appthemeSaver.save(app.theme);
-                getActivity().recreate();
-                break;
-            case R.id.button_black:
-                app.theme = R.style.black;
-                appthemeSaver.save(app.theme);
-                getActivity().recreate();
-                break;
-
-        }
+    private void initColorBar(){
+        ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
+            @Override
+            public Shader resize(int width, int height) {
+                LinearGradient linearGradient = new LinearGradient(0, 0, width, height,
+                        ColorSeekBar.PICKCOLORBAR_COLORS, ColorSeekBar.PICKCOLORBAR_POSITIONS, Shader.TileMode.REPEAT);
+                return linearGradient;
+            }
+        };
+        PaintDrawable paint = new PaintDrawable();
+        paint.setShape(new RectShape());
+        paint.setCornerRadius(10);
+        paint.setShaderFactory(shaderFactory);
+        mSbColor.setProgressDrawable(paint);
     }
 }

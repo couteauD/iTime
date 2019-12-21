@@ -20,7 +20,7 @@
             android:layout_height="42dp"
             android:background="@drawable/button_background"
             android:text="拍照"
-            android:textColor="?text_cl" />
+            android:textColor="@color/colorPrimaryDark" />
         ​
         <View
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
             android:layout_height="42dp"
             android:background="@drawable/button_background"
             android:text="从相册选择"
-            android:textColor="?text_cl" />
+            android:textColor="@color/colorPrimaryDark" />
         ​
         <Button
             android:id="@+id/icon_btn_cancel"
@@ -42,7 +42,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/button_background"
             android:text="取消"
-            android:textColor="?text_cl" />
+            android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
     ​
 </RelativeLayout>

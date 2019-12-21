@@ -38,10 +38,10 @@ public class SelectPictureManager {
     /*
     定义返回的code值
      */
-    public static final int TAKE_PHOTO_CODE = 1000; //拍照
-    public static final int CHOOSE_PHOTO_CODE = 2000; //选择相册
-    public static final int PICTURE_CROP_CODE = 3000;  //剪切图片
-    public static final int REQUEST_PERMISSIONS = 4000; //授权code
+    private static final int TAKE_PHOTO_CODE = 1000; //拍照
+    private static final int CHOOSE_PHOTO_CODE = 2000; //选择相册
+    private static final int PICTURE_CROP_CODE = 3000;  //剪切图片
+    private static final int REQUEST_PERMISSIONS = 4000; //授权code
 
     private boolean isNeedCrop = false; //是否需要裁剪，默认不需要
     private boolean isScale = true; //是否需要支持缩放，在可裁剪情况下有效
@@ -54,9 +54,9 @@ public class SelectPictureManager {
     private int outputX = 400;//裁剪后输出图片的尺寸大小
     private int outputY = 400;//裁剪后输出图片的尺寸大小
 
-    Activity activity;//全局上下文 需要startactiity
+    private Activity activity;//全局上下文 需要startactiity
 
-    PictureSelectListner pictureSelectListner;//选择之后照片的回调监听
+    private PictureSelectListner pictureSelectListner;//选择之后照片的回调监听
 
     /**
      * 构造SelectPictureManager对象
@@ -105,7 +105,7 @@ public class SelectPictureManager {
      * @param isNeedCrop
      * @return
      */
-    public SelectPictureManager setNeedCrop(boolean isNeedCrop) {
+    SelectPictureManager setNeedCrop(boolean isNeedCrop) {
         this.isNeedCrop = isNeedCrop;
         return this;
     }

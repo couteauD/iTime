@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
-        android:headerBackground="?text_cl"
+        android:headerBackground="@color/colorPrimary"
         android:endYear="2027"
         android:startYear="2007" />
 

@@ -12,7 +12,7 @@
     <com.example.itime.model.FlowLayout
         android:id="@+id/mark_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_weight="1"
         >
     </com.example.itime.model.FlowLayout>
@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:background="@android:color/white"
             android:text="删除选中标签"
-            android:textColor="?text_cl"/>
+            android:textColor="@color/colorPrimary"/>
         <Button
             android:id="@+id/button_cancel"
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:background="@android:color/white"
             android:text="取消"
-            android:textColor="?text_cl" />
+            android:textColor="@color/colorPrimary" />
 
         <Button
             android:id="@+id/button_ok"
@@ -46,7 +46,7 @@
             android:layout_weight="1"
             android:background="@android:color/white"
             android:text="确定"
-            android:textColor="?text_cl" />
+            android:textColor="@color/colorPrimary" />
 
     </LinearLayout>
 

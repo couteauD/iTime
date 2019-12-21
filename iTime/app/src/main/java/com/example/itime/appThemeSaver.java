@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 
 public class appThemeSaver {
     private Context context;
-    private int theme;
+    private int theme=0;
 
     public appThemeSaver(Context context) {
         this.context = context;

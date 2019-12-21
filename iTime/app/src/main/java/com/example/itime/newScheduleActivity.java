@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.itime.ui.color.Myapp;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
@@ -51,22 +50,21 @@ public class newScheduleActivity extends AppCompatActivity{
     private SelectPictureManager selectPictureManager;
     private Bitmap bitmap;
     private String title,date,time,cycle,mark,remark;
+    private int themeColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Myapp app = (Myapp)getApplication();
         appthemeSaver=new appThemeSaver(this);
-        app.theme=appthemeSaver.load();
-        if(app.theme==0){
-            //使用默认主题
-        }else{
-            //使用自定义的主题
-            setTheme(app.theme);
-        }
+        themeColor=appthemeSaver.load();
 
         setContentView(R.layout.activity_new_schedule);
+
+        //状态栏设置
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(themeColor);
+        }
 
         ActionBar actionBar = getSupportActionBar();
         //隐藏标题栏
@@ -104,6 +102,7 @@ public class newScheduleActivity extends AppCompatActivity{
         //初始化控件
         linearLayoutImg=findViewById(R.id.setimg);
         linearLayouttitle=findViewById(R.id.linearLayout_title);
+        linearLayouttitle.setBackgroundColor(themeColor);
         //图片点击事件
         linearLayoutImg.setOnClickListener(new View.OnClickListener() {
             @Override
