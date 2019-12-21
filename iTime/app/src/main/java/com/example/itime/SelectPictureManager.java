@@ -357,7 +357,6 @@ public class SelectPictureManager {
                             pictureSelectListner.onPictureSelect(imageFile.getAbsolutePath());
                         }
                     }
-                    break;
                 case CHOOSE_PHOTO_CODE:
                     // TODO: 从相册选择
                     Uri uri = data.getData();

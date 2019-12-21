@@ -53,7 +53,8 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
 
         //状态栏设置
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(themeColor);
+            if(themeColor!=0)
+                getWindow().setStatusBarColor(themeColor);
         }
 
         ActionBar actionBar = getSupportActionBar();

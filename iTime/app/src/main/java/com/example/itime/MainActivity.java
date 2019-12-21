@@ -45,11 +45,13 @@ public class MainActivity extends AppCompatActivity{
 
         //状态栏设置
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(themeColor);
+            if(themeColor!=0)
+                getWindow().setStatusBarColor(themeColor);
         }
         //标题栏设置
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(themeColor);
+        if(themeColor!=0)
+            toolbar.setBackgroundColor(themeColor);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -70,7 +70,8 @@ public class MainpageFragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_mainpage, container, false);
 
         FloatingActionButton fab = root.findViewById(R.id.fab);
-        fab.setBackgroundTintList(createColorStateList(themeColor, themeColor, themeColor, themeColor));
+        if(themeColor!=0)
+            fab.setBackgroundTintList(createColorStateList(themeColor, themeColor, themeColor, themeColor));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,7 +134,7 @@ public class MainpageFragment extends Fragment {
             ((TextView) view.findViewById(R.id.text_view_title)).setText(schedule.getTitle());
             ((TextView)view.findViewById(R.id.text_view_date)).setText(schedule.getDate());
             ((TextView) view.findViewById(R.id.text_view_remark)).setText(schedule.getRemark());
-            int day=initTimeDifference(schedule.getDate(),schedule.getTime());
+            long day=initTimeDifference(schedule.getDate(),schedule.getTime());
             ((TextView) view.findViewById(R.id.text_view_img)).setText(day+"天");
 
             return view;
@@ -144,7 +145,7 @@ public class MainpageFragment extends Fragment {
     /*
      * 设置默认图片上的倒计时时间
      */
-    private int initTimeDifference(String date,String time) {
+    private long initTimeDifference(String date,String time) {
         try {
             //获取当前系统时间
             Calendar calendar = Calendar.getInstance();
@@ -157,7 +158,7 @@ public class MainpageFragment extends Fragment {
 
             //计算时间差
             long difference =Math.abs(from-to);
-            int dayNum= (int) difference / (1000 * 60 * 60 * 24);
+            long dayNum= (long) difference / (1000 * 60 * 60 * 24);
 
             return dayNum;
         } catch (ParseException e) {
@@ -213,7 +214,7 @@ public class MainpageFragment extends Fragment {
                     String mark = data.getStringExtra("mark");
                     byte[] bitmapByte = data.getByteArrayExtra("bitmap");
                     int position=data.getIntExtra("position",-1);
-                    schedules.set(position,new Schedule(title, date, time, remark, cycle, mark, bitmapByte));
+                    schedules.set(position, new Schedule(title, date, time, remark, cycle, mark, bitmapByte));
                     adapter.notifyDataSetChanged();
                 }
                 break;

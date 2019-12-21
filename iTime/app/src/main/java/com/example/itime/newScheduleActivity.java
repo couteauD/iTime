@@ -66,7 +66,8 @@ public class newScheduleActivity extends AppCompatActivity{
 
         //状态栏颜色设置
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(themeColor);
+            if(themeColor!=0)
+                getWindow().setStatusBarColor(themeColor);
         }
 
         //隐藏标题栏
@@ -101,7 +102,8 @@ public class newScheduleActivity extends AppCompatActivity{
         //设置图片
         linearLayoutImg=findViewById(R.id.setimg);
         linearLayouttitle=findViewById(R.id.linearLayout_title);
-        linearLayouttitle.setBackgroundColor(themeColor);
+        if(themeColor!=0)
+            linearLayouttitle.setBackgroundColor(themeColor);
         //图片点击事件
         linearLayoutImg.setOnClickListener(new View.OnClickListener() {
             @Override

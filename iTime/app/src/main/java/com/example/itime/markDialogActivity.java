@@ -51,9 +51,11 @@ public class markDialogActivity extends AppCompatActivity {
         buttonDelete=(Button)findViewById(R.id.button_delete);
         buttonCancel=(Button)findViewById(R.id.button_cancel);
         buttonOk=(Button)findViewById(R.id.button_ok);
-        buttonDelete.setTextColor(themeColor);
-        buttonCancel.setTextColor(themeColor);
-        buttonOk.setTextColor(themeColor);
+        if(themeColor!=0) {
+            buttonDelete.setTextColor(themeColor);
+            buttonCancel.setTextColor(themeColor);
+            buttonOk.setTextColor(themeColor);
+        }
 
 
        //创建默认标签
@@ -68,7 +70,8 @@ public class markDialogActivity extends AppCompatActivity {
         //设置shape
         editText.setBackgroundResource(R.drawable.mark_edit);
         editText.setHintTextColor(Color.parseColor("#b4b4b4"));
-        editText.setTextColor(themeColor);
+        if(themeColor!=0)
+            editText.setTextColor(themeColor);
         editText.setLayoutParams(params);
 
         //添加到layout中
@@ -109,7 +112,8 @@ public class markDialogActivity extends AppCompatActivity {
                                         //显示 √选中
                                         temp.setText(temp.getText() + " √");
                                         temp.setBackgroundResource(R.drawable.mark_selected);
-                                        temp.setTextColor(getResources().getColor(themeColor));
+                                        if(themeColor!=0)
+                                            temp.setTextColor(getResources().getColor(themeColor));
                                         //修改选中状态
                                         tagViewState.set(curIndex, true);
                                     } else {
@@ -215,7 +219,8 @@ public class markDialogActivity extends AppCompatActivity {
                         //显示 √选中
                         textView.setText(textView.getText() + " √");
                         textView.setBackgroundResource(R.drawable.mark_selected);
-                        textView.setTextColor(themeColor);
+                        if(themeColor!=0)
+                            textView.setTextColor(themeColor);
                         //修改选中状态
                         tagViewState.set(curIndex, true);
                     } else {
