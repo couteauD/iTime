@@ -18,12 +18,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -38,9 +39,10 @@ public class newScheduleActivity extends AppCompatActivity{
 
     private appThemeSaver appthemeSaver;
     private Context context;
-    private LinearLayout linearLayoutDate, linearLayoutcycle,linearLayoutImg,linearLayouttitle,linearLayoutmark;
+    private RelativeLayout linearLayoutDate, linearLayoutcycle,linearLayoutImg,linearLayoutmark;
+    private LinearLayout linearLayouttitle;
     private TextView dateInstuction, timeInstruction,cycleInstruction,markInstruction;
-    private FloatingActionButton buttonNavOK,buttonNavBack;
+    private ImageButton buttonNavOK,buttonNavBack;
     private EditText editTextTitle,editTextRemark;
 
     private int year, month, day, hour, minute;
@@ -56,28 +58,27 @@ public class newScheduleActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //读取设置的主题色
         appthemeSaver=new appThemeSaver(this);
         themeColor=appthemeSaver.load();
 
         setContentView(R.layout.activity_new_schedule);
 
-        //状态栏设置
+        //状态栏颜色设置
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(themeColor);
         }
 
-        ActionBar actionBar = getSupportActionBar();
         //隐藏标题栏
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
-
 
         //获取输入框内容
         //初始化控件
         editTextTitle=findViewById(R.id.edit_text_title);
         editTextRemark=findViewById(R.id.edit_text_remark);
-
 
         //设置日期计算器
         context = this;
@@ -87,7 +88,6 @@ public class newScheduleActivity extends AppCompatActivity{
         initDateTime();
 
         //设置周期
-        //初始化控件
         linearLayoutcycle= findViewById(R.id.setcycle);
         cycleInstruction=findViewById(R.id.text_view_cycleInstruction);
         //重复设置点击事件
@@ -99,7 +99,6 @@ public class newScheduleActivity extends AppCompatActivity{
         });
 
         //设置图片
-        //初始化控件
         linearLayoutImg=findViewById(R.id.setimg);
         linearLayouttitle=findViewById(R.id.linearLayout_title);
         linearLayouttitle.setBackgroundColor(themeColor);
@@ -112,7 +111,6 @@ public class newScheduleActivity extends AppCompatActivity{
         });
 
         //添加标签
-        //初始化控件
         linearLayoutmark=findViewById(R.id.setmark);
         markInstruction=findViewById(R.id.text_view_markInstruction);
         //添加标签点击事件
@@ -125,7 +123,6 @@ public class newScheduleActivity extends AppCompatActivity{
         });
 
         //设置导航栏
-        //初始化部件
         buttonNavBack=findViewById(R.id.nav_back);
         buttonNavOK=findViewById(R.id.nav_ok);
         //设置点击事件
@@ -159,6 +156,10 @@ public class newScheduleActivity extends AppCompatActivity{
 
                             //把bitmap数据存储在btye[]数组中，然后再通过intent进行传递
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            if(bitmap==null){
+                                //如果用户没有设置图片则使用默认图片
+                                bitmap=BitmapFactory.decodeResource(getResources(),R.drawable.nav_bar_background);
+                            }
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                             byte[] bitmapByte = baos.toByteArray();
                             intent.putExtra("bitmap", bitmapByte);
@@ -195,7 +196,7 @@ public class newScheduleActivity extends AppCompatActivity{
 
             byte[] bitmapByte=getIntent().getByteArrayExtra("bitmap");
             bitmap = BitmapFactory.decodeByteArray(bitmapByte,0, bitmapByte.length);
-            linearLayouttitle.setBackground( new BitmapDrawable(getResources(),bitmap));
+            linearLayouttitle.setBackground(new BitmapDrawable(getResources(),bitmap));
         }
     }
 
@@ -209,6 +210,7 @@ public class newScheduleActivity extends AppCompatActivity{
         linearLayoutDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //时间控件
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
                 builder2.setPositiveButton("设置", new DialogInterface.OnClickListener() {
                     @Override
@@ -288,7 +290,7 @@ public class newScheduleActivity extends AppCompatActivity{
     private void initDateTime() {
         Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH) + 1;
+        month = calendar.get(Calendar.MONTH)+1;
         day = calendar.get(Calendar.DAY_OF_MONTH);
         hour = calendar.get(Calendar.HOUR);
         minute = calendar.get(Calendar.MINUTE);

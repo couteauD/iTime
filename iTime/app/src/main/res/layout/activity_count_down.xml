@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".CountDownActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/image_view_countDownBackground"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/nav_bar_background"
             android:scaleType="fitXY"/>
 
         <RelativeLayout
@@ -21,16 +23,16 @@
             android:layout_height="wrap_content"
             android:padding="20dp">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <ImageButton
                 android:id="@+id/back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:src="@drawable/back"
-                app:backgroundTint="#7E7D7D" />
+                app:backgroundTint="#00000000" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <ImageButton
                 android:id="@+id/delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,9 +41,9 @@
                 android:layout_toStartOf="@+id/share"
                 android:layout_toLeftOf="@+id/share"
                 android:src="@drawable/delete"
-                app:backgroundTint="#7E7D7D" />
+                app:backgroundTint="#00000000" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <ImageButton
                 android:id="@+id/share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,56 +52,195 @@
                 android:layout_toStartOf="@+id/update"
                 android:layout_toLeftOf="@+id/update"
                 android:src="@drawable/share"
-                app:backgroundTint="#7E7D7D" />
+                app:backgroundTint="#00000000" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <ImageButton
                 android:id="@+id/update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/update"
-                app:backgroundTint="#7E7D7D" />
+                app:backgroundTint="#00000000" />
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/text_view_countdown_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="主题"
-                android:textSize="30dp"
-                android:textColor="@android:color/white"/>
-
-            <TextView
-                android:id="@+id/text_view_countdown_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="日期"
-                android:textSize="30dp"
-                android:paddingTop="15dp"
-                android:textColor="@android:color/white"/>
-
-
-            <TextView
-            android:id="@+id/text_view_countdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="测试文字"
-            android:textSize="30dp"
-                android:paddingTop="15dp"
-            android:textColor="@android:color/white"/>
-        </LinearLayout>
-
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/divider_line"
+        android:showDividers = "end"
+        android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp">
+
+                <ImageView
+                    android:id="@+id/image_view_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/date"
+                    android:layout_marginLeft="30dp"/>
+
+                <TextView
+                    android:id="@+id/text_view_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/image_view_title"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:text="主题"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp">
+
+            <ImageView
+                android:id="@+id/image_view_countdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/countdown"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/image_view_countdown"
+                android:layout_toEndOf="@+id/image_view_countdown"
+                android:layout_marginLeft="15dp">
+
+                <TextView
+                    android:id="@+id/text_view_countdown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="计时"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/text_view_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="日期"
+                    android:textSize="12sp"
+                    android:layout_below="@+id/text_view_countdown"
+                    android:paddingTop="5dp"/>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp">
+
+            <ImageView
+                android:id="@+id/image_view_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/notification"
+                android:layout_marginLeft="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/image_view_notification"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:text="通知栏"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp">
+
+            <ImageView
+                android:id="@+id/image_view_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/calendar"
+                android:layout_marginLeft="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/image_view_calendar"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:text="在日历中显示"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp">
+
+            <ImageView
+                android:id="@+id/image_view_iconshortcut"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/iconshortcut"
+                android:layout_marginLeft="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/image_view_iconshortcut"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:text="快捷图标"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

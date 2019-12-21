@@ -51,6 +51,10 @@ public class markDialogActivity extends AppCompatActivity {
         buttonDelete=(Button)findViewById(R.id.button_delete);
         buttonCancel=(Button)findViewById(R.id.button_cancel);
         buttonOk=(Button)findViewById(R.id.button_ok);
+        buttonDelete.setTextColor(themeColor);
+        buttonCancel.setTextColor(themeColor);
+        buttonOk.setTextColor(themeColor);
+
 
        //创建默认标签
         initData();
@@ -104,7 +108,7 @@ public class markDialogActivity extends AppCompatActivity {
                                     if (!tagViewState.get(curIndex)) {
                                         //显示 √选中
                                         temp.setText(temp.getText() + " √");
-                                        temp.setBackgroundResource(themeColor);
+                                        temp.setBackgroundResource(R.drawable.mark_selected);
                                         temp.setTextColor(getResources().getColor(themeColor));
                                         //修改选中状态
                                         tagViewState.set(curIndex, true);
@@ -210,7 +214,7 @@ public class markDialogActivity extends AppCompatActivity {
                     if (!tagViewState.get(curIndex)) {
                         //显示 √选中
                         textView.setText(textView.getText() + " √");
-                        textView.setBackgroundColor(themeColor);
+                        textView.setBackgroundResource(R.drawable.mark_selected);
                         textView.setTextColor(themeColor);
                         //修改选中状态
                         tagViewState.set(curIndex, true);

@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,10 +33,12 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
     private MyCount myCount;
     private long difference,from,to;
     private int position;
-
-    private FloatingActionButton buttonBack,buttonDelete,buttonShare,buttonUpdate;
+    private String title,date,time,remark,cycle,mark;
+    private byte[] bitmapByte;
+    private ImageButton buttonBack,buttonDelete,buttonShare,buttonUpdate;
 
     private static final int UPDATE_CODE=203;
+    private static final int RESULT_DELETE=1;
 
     private int themeColor;
 
@@ -61,8 +64,8 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
 
         imageViewCountdownBackground = findViewById(R.id.image_view_countDownBackground);
         textViewCountdown = findViewById(R.id.text_view_countdown);
-        textViewTitle=findViewById(R.id.text_view_countdown_title);
-        textViewDate=findViewById(R.id.text_view_countdown_date);
+        textViewTitle=findViewById(R.id.text_view_title);
+        textViewDate=findViewById(R.id.text_view_date);
 
         //获取图片数据设置背景
         byte[] url = getIntent().getByteArrayExtra("bitmap");
@@ -122,21 +125,11 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
         try {
             //获取当前系统时间
         Calendar calendar = Calendar.getInstance();
-        int fromYear = calendar.get(Calendar.YEAR);
-        int fromMonth = calendar.get(Calendar.MONTH) + 1;
-        int fromDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int fromHour = calendar.get(Calendar.HOUR);
-        int fromMinute = calendar.get(Calendar.MINUTE);
-
-        Calendar fromdate = Calendar.getInstance();
-        fromdate.set(fromYear, fromMonth, fromDay, fromHour, fromMinute, 0);
-        from=fromdate.getTimeInMillis();
+        from=calendar.getTimeInMillis();
 
         //获取给定时间
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分");//24小时制
-            String date = getIntent().getStringExtra("date");
-            String time=getIntent().getStringExtra("time");
-            String toDate=date+time;
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分");//24小时制
+            String toDate=textViewDate.getText().toString();
             to = simpleDateFormat.parse(toDate).getTime();
 
             //计算时间差
@@ -157,6 +150,16 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.back:
+                Intent intentBack=new Intent();
+                intentBack.putExtra("title",title);
+                intentBack.putExtra("date",date);
+                intentBack.putExtra("time",time);
+                intentBack.putExtra("remark",remark);
+                intentBack.putExtra("cycle",cycle);
+                intentBack.putExtra("mark",mark);
+                intentBack.putExtra("bitmap",bitmapByte);
+                intentBack.putExtra("position",position);
+                setResult(RESULT_OK,intentBack);
                 CountDownActivity.this.finish();
                 break;
 
@@ -166,23 +169,23 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
                         .setNegativeButton("取消",null)
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                int position= getIntent().getIntExtra("position",-1);
+                                position= getIntent().getIntExtra("position",-1);
                                 Intent intentDelete=new Intent();
                                 intentDelete.putExtra("position",position);
-                                setResult(RESULT_FIRST_USER,intentDelete);
+                                setResult(RESULT_DELETE,intentDelete);
                                 CountDownActivity.this.finish();
                             }
                         }).show();
                 break;
 
             case R.id.update:
-                String title = getIntent().getStringExtra("title");
-                String date = getIntent().getStringExtra("date");
-                String time = getIntent().getStringExtra("time");
-                String remark = getIntent().getStringExtra("remark");
-                String cycle=getIntent().getStringExtra("cycle");
-                String mark=getIntent().getStringExtra("mark");
-                byte[] bitmapByte= getIntent().getByteArrayExtra("bitmap");
+                title = getIntent().getStringExtra("title");
+                date = getIntent().getStringExtra("date");
+                time = getIntent().getStringExtra("time");
+                remark = getIntent().getStringExtra("remark");
+                cycle=getIntent().getStringExtra("cycle");
+                mark=getIntent().getStringExtra("mark");
+                bitmapByte= getIntent().getByteArrayExtra("bitmap");
                 position=getIntent().getIntExtra("position",-1);
 
                 Intent intentUpdate=new Intent(CountDownActivity.this,newScheduleActivity.class);
@@ -195,6 +198,7 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
                 intentUpdate.putExtra("bitmap",bitmapByte);
 
                 startActivityForResult(intentUpdate,UPDATE_CODE);
+                myCount.cancel();
                 break;
         }
 
@@ -204,24 +208,21 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==UPDATE_CODE && resultCode==RESULT_OK){
-            String title = data.getStringExtra("title");
-            String date = data.getStringExtra("date");
-            String time = data.getStringExtra("time");
-            String remark = data.getStringExtra("remark");
-            String cycle=data.getStringExtra("cycle");
-            String mark=data.getStringExtra("mark");
-            byte[] bitmapByte= data.getByteArrayExtra("bitmap");
+            title = data.getStringExtra("title");
+            date = data.getStringExtra("date");
+            time = data.getStringExtra("time");
+            remark = data.getStringExtra("remark");
+            cycle=data.getStringExtra("cycle");
+            mark=data.getStringExtra("mark");
+            bitmapByte= data.getByteArrayExtra("bitmap");
 
-            Intent intent = new Intent();
-            intent.putExtra("title", title);
-            intent.putExtra("date", date);
-            intent.putExtra("time",time);
-            intent.putExtra("remark", remark);
-            intent.putExtra("cycle",cycle);
-            intent.putExtra("mark",mark);
-            intent.putExtra("bitmap", bitmapByte);
-            intent.putExtra("position",position);
-            setResult(RESULT_OK,intent);
+            textViewTitle.setText(title);
+            textViewDate.setText(date+time);
+            byte[] url = getIntent().getByteArrayExtra("bitmap");
+            Bitmap bitmap = BitmapFactory.decodeByteArray(url, 0, url.length);
+            imageViewCountdownBackground.setImageBitmap(bitmap);
+            myCount = new MyCount(getTimeDifference(), 1000);
+            myCount.start();
         }
     }
 }
