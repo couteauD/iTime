@@ -62,6 +62,15 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
         if (actionBar != null) {
             actionBar.hide();
         }
+        //初始化日程表基本信息
+        title = getIntent().getStringExtra("title");
+        date = getIntent().getStringExtra("date");
+        time = getIntent().getStringExtra("time");
+        remark = getIntent().getStringExtra("remark");
+        cycle=getIntent().getStringExtra("cycle");
+        mark=getIntent().getStringExtra("mark");
+        bitmapByte= getIntent().getByteArrayExtra("bitmap");
+        position=getIntent().getIntExtra("position",-1);
 
         imageViewCountdownBackground = findViewById(R.id.image_view_countDownBackground);
         textViewCountdown = findViewById(R.id.text_view_countdown);
@@ -180,15 +189,6 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.update:
-                title = getIntent().getStringExtra("title");
-                date = getIntent().getStringExtra("date");
-                time = getIntent().getStringExtra("time");
-                remark = getIntent().getStringExtra("remark");
-                cycle=getIntent().getStringExtra("cycle");
-                mark=getIntent().getStringExtra("mark");
-                bitmapByte= getIntent().getByteArrayExtra("bitmap");
-                position=getIntent().getIntExtra("position",-1);
-
                 Intent intentUpdate=new Intent(CountDownActivity.this,newScheduleActivity.class);
                 intentUpdate.putExtra("title",title);
                 intentUpdate.putExtra("date",date);

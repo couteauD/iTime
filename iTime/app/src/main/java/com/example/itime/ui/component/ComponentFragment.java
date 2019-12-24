@@ -21,13 +21,6 @@ public class ComponentFragment extends Fragment {
         slideshowViewModel =
                 ViewModelProviders.of(this).get(ComponentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_component, container, false);
-        final TextView textView = root.findViewById(R.id.text_component);
-        slideshowViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 }

@@ -1,10 +1,7 @@
 package com.example.itime.ui.color;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
+import android.content.DialogInterface;;
 import android.graphics.LinearGradient;
 import android.graphics.PorterDuff;
 import android.graphics.Shader;
@@ -13,20 +10,14 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.itime.MainActivity;
@@ -41,29 +32,44 @@ public class colorFrament extends Fragment {
     private ColorSeekBar mColorSeekBar;
     private Toolbar toolbar;
     private appThemeSaver appThemeSaver;
-    private Button buttonCancel,buttonOK;
     private int mColor;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        Context contextTheme = new ContextThemeWrapper(getActivity(),R.style.ColorDialogStyle);
-        LayoutInflater themeInflater = inflater.cloneInContext(contextTheme);
-        View root = themeInflater.inflate(R.layout.fragment_color, container, false);
 
-        mSbColor=root.findViewById(R.id.seekbar);
-        buttonCancel=root.findViewById(R.id.button_cancel);
-        buttonOK=root.findViewById(R.id.button_setThemeColor);
-
+        View root = inflater.inflate(R.layout.fragment_component, container, false);
         mColorSeekBar=new ColorSeekBar();
         appThemeSaver=new appThemeSaver(getContext());
         MainActivity activity = (MainActivity) getActivity();
         toolbar= (Toolbar) activity.findViewById(R.id.toolbar);
 
-        buttonCancel.setTextColor(appThemeSaver.load());
-        buttonOK.setTextColor(appThemeSaver.load());
-         //设置SeekBar的颜色
-        initColorBar();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                appThemeSaver.save(mColor);
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int color=appThemeSaver.load();
+                //菜单栏设置
+                toolbar.setBackgroundColor(color);
 
+                //状态栏设置
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getActivity().getWindow().setStatusBarColor(color);
+                }
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        View dialogView = View.inflate(getContext(), R.layout.fragment_color, null);
+        mSbColor=dialogView.findViewById(R.id.seekbar);
+        //设置SeekBar的颜色
+        initColorBar();
         //当SeekBar被滑动时,获取颜色
         mSbColor.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -80,10 +86,6 @@ public class colorFrament extends Fragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getActivity().getWindow().setStatusBarColor(mColor);
                 }
-
-                //按钮设置
-                buttonCancel.setTextColor(mColor);
-                buttonOK.setTextColor(mColor);
             }
 
             @Override
@@ -96,33 +98,9 @@ public class colorFrament extends Fragment {
 
             }
         });
-
-        //恢复原来设置
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int color=appThemeSaver.load();
-                //菜单栏设置
-                toolbar.setBackgroundColor(color);
-
-                //状态栏设置
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getActivity().getWindow().setStatusBarColor(color);
-                }
-
-                //按钮设置
-                buttonCancel.setTextColor(color);
-                buttonOK.setTextColor(color);
-            }
-        });
-
-        //保存新设置
-        buttonOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                appThemeSaver.save(mColor);
-            }
-        });
+        dialog.setTitle("选择颜色");
+        dialog.setView(dialogView);
+        dialog.show();
 
         return root;
     }
@@ -142,5 +120,4 @@ public class colorFrament extends Fragment {
         paint.setShaderFactory(shaderFactory);
         mSbColor.setProgressDrawable(paint);
     }
-
 }

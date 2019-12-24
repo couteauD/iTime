@@ -122,20 +122,21 @@ public class MainpageFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             Schedule schedule = getItem(position);//获取当前项的实例
             View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
-
-            bitmap = BitmapFactory.decodeByteArray(schedule.getbitmapByte(), 0, schedule.getbitmapByte().length);
-            //选取图片颜色
-            Palette palette = Palette.from(bitmap).generate();
-            Palette.Swatch vibrant = palette.getVibrantSwatch();//有活力的
-            ((ImageView)view.findViewById(R.id.imageViewborder)).setBackgroundColor(vibrant.getRgb());
-            //图片进行高斯模糊处理
-            bitmap = ImageFilter.doBlur(bitmap, 30, false);
-            ((ImageView)view.findViewById(R.id.image_view_img)).setImageBitmap(bitmap);
-            ((TextView) view.findViewById(R.id.text_view_title)).setText(schedule.getTitle());
-            ((TextView)view.findViewById(R.id.text_view_date)).setText(schedule.getDate());
-            ((TextView) view.findViewById(R.id.text_view_remark)).setText(schedule.getRemark());
-            long day=initTimeDifference(schedule.getDate(),schedule.getTime());
-            ((TextView) view.findViewById(R.id.text_view_img)).setText(day+"天");
+            if(schedule.getbitmapByte()!= null && schedule.getbitmapByte().length!= 0) {
+                bitmap = BitmapFactory.decodeByteArray(schedule.getbitmapByte(), 0, schedule.getbitmapByte().length);
+                //选取图片颜色
+                Palette palette = Palette.from(bitmap).generate();
+                Palette.Swatch vibrant = palette.getVibrantSwatch();//有活力的
+                ((ImageView) view.findViewById(R.id.imageViewborder)).setBackgroundColor(vibrant.getRgb());
+                //图片进行高斯模糊处理
+                bitmap = ImageFilter.doBlur(bitmap, 30, false);
+                ((ImageView) view.findViewById(R.id.image_view_img)).setImageBitmap(bitmap);
+                ((TextView) view.findViewById(R.id.text_view_title)).setText(schedule.getTitle());
+                ((TextView) view.findViewById(R.id.text_view_date)).setText(schedule.getDate());
+                ((TextView) view.findViewById(R.id.text_view_remark)).setText(schedule.getRemark());
+                long day = initTimeDifference(schedule.getDate(), schedule.getTime());
+                ((TextView) view.findViewById(R.id.text_view_img)).setText(day + "天");
+            }
 
             return view;
         }
